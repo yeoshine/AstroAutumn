@@ -3,7 +3,6 @@
 
 from ..models.stk_basic_info import StkBasicInfo
 from ..models.tu_stk_daily_quote import TuStkDailyQuote
-from ..models.astro_transit_vs_life import AstroTransitVsLife
 import tushare as ts
 from instance import config
 from ..utils.astro_chart import AstroChart
@@ -40,12 +39,12 @@ class StkBasicInfoService:
                     'vs' +
                     '_' +
                     config.LIFE_OBJECTS[a])
-        str = ''
+        string = ''
         for column in range(len(column_list)):
-            str += (
+            string += (
                 "`{column}` int(10) DEFAULT NULL," .format(
                     column=column_list[column]))
-        return str
+        return string
 
     @staticmethod
     def transit_vs_life(trading_code=config.TRADING_CODE):
@@ -119,7 +118,6 @@ class StkBasicInfoService:
                         "('{condition}', '{transit_vs_life}', {aspect}, {count}, {code})" \
                                 .format(condition=condition, transit_vs_life=column, aspect=aspect, count=count, code=config.TRADING_CODE)
                     config.SQLALCHEMY_DATABASE_ENGINE.execute(insert_sql)
-            z = 999
         except Exception as e:
             return "Class: %s method: %s %s " % (
                 StkBasicInfoService.__class__, sys._getframe().f_code.co_name, e)
