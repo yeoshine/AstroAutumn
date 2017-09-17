@@ -1,0 +1,125 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from ..models.stk_basic_info import StkBasicInfo
+from ..models.tu_stk_daily_quote import TuStkDailyQuote
+from ..models.astro_transit_vs_life import AstroTransitVsLife
+import tushare as ts
+from instance import config
+from ..utils.astro_chart import AstroChart
+from ..utils.astro_aspect import AstroAspect
+import sys
+
+
+class StkBasicInfoService:
+
+    @staticmethod
+    def get_stock_info(trading_code=config.TRADING_CODE):
+        stock_info = StkBasicInfo.query.filter_by(
+            TradingCode=trading_code).first()
+        return stock_info
+
+    @staticmethod
+    def get_daily_quote(trading_code=config.TRADING_CODE):
+        start = StkBasicInfoService.get_stock_info().ListingDate
+        df = ts.get_h_data(trading_code, start=str(start), retry_count=10)
+        df.to_sql(
+            'tus_stk_daily_quote',
+            config.SQLALCHEMY_DATABASE_ENGINE,
+            schema='autumndb',
+            if_exists='append')
+
+    @staticmethod
+    def get_column_name():
+        column_list = []
+        for a in range(len(config.LIFE_OBJECTS)):
+            for b in range(len(config.TRANSIT_OBJECTS)):
+                column_list.append(
+                    config.TRANSIT_OBJECTS[b] +
+                    '_' +
+                    'vs' +
+                    '_' +
+                    config.LIFE_OBJECTS[a])
+        str = ''
+        for column in range(len(column_list)):
+            str += (
+                "`{column}` int(10) DEFAULT NULL," .format(
+                    column=column_list[column]))
+        return str
+
+    @staticmethod
+    def transit_vs_life(trading_code=config.TRADING_CODE):
+        try:
+            stock_info = StkBasicInfoService.get_stock_info(trading_code)
+            listing_date = stock_info.ListingDate
+            if stock_info.ExchangeCode == config.SH_EXCHANGECODE:
+                lat = config.SH_LAT
+                long = config.SH_LONG
+            else:
+                lat = config.SZ_LAT
+                long = config.SZ_LONG
+            life_chart = AstroChart.handle(
+                listing_date.year,
+                listing_date.month,
+                listing_date.day,
+                config.DEFAULT_LISTING_TIME_HOUR,
+                config.DEFAULT_LISTING_TIME_MINUTE,
+                lat,
+                long)
+            daily_quote = TuStkDailyQuote.query.filter_by(
+                code=trading_code).all()
+            for i in range(len(daily_quote)):
+                trading_date = daily_quote[i].date
+                transit_chart = AstroChart.handle(
+                    trading_date.year,
+                    trading_date.month,
+                    trading_date.day,
+                    config.TRANSIT_DEFAULT_TIME_HOUR,
+                    config.TRANSIT_DEFAULT_TIME_MINUTE,
+                    lat,
+                    long)
+                aspect_dict = AstroAspect.transit_vs_life_aspect(
+                    transit_chart, life_chart)
+
+                sql = "INSERT INTO astro_transit_vs_life (trading_code, trading_date) VALUES ({trading_code}, '{trading_date}')" .format(
+                    trading_code=trading_code, trading_date=trading_date)
+                config.SQLALCHEMY_DATABASE_ENGINE.execute(sql)
+                for key in aspect_dict:
+                    up_sql = "UPDATE astro_transit_vs_life set {key} = {values} WHERE trading_code = {trading_code} and trading_date = '{trading_date}'" .format(
+                        key=key, values=aspect_dict[key], trading_code=trading_code, trading_date=trading_date)
+                    config.SQLALCHEMY_DATABASE_ENGINE.execute(up_sql)
+        except Exception as e:
+            return "Class: %s method: %s %s " % (
+                StkBasicInfoService.__class__, sys._getframe().f_code.co_name, e)
+
+    @staticmethod
+    def get_aspect_count():
+        try:
+            column_list = []
+            for a in range(len(config.LIFE_OBJECTS)):
+                for b in range(len(config.TRANSIT_OBJECTS)):
+                    column_list.append(
+                        config.TRANSIT_OBJECTS[b] +
+                        '_' +
+                        'vs' +
+                        '_' +
+                        config.LIFE_OBJECTS[a])
+            # condition = "p_change > 0"
+            condition = "p_change < 0"
+            for i in range(len(column_list)):
+                column = column_list[i]
+                for j in range(len(config.ASPECT_LIST)):
+                    aspect = config.ASPECT_LIST[j]
+                    sql = "select count(*) from `astro_transit_vs_life` a left join `tu_stk_daily_quote` b " \
+                          "on a.`trading_code` = b.`code` and a.`trading_date` = b.`date` where " \
+                          "b.{where} and a.{column} = {aspect}" .format(where=condition, column=column, aspect=aspect)
+                    result = config.SQLALCHEMY_DATABASE_ENGINE.execute(sql)
+                    count = result.fetchone()[0]
+                    insert_sql = "INSERT INTO `astro_aspect_count` (`condition`, transit_vs_life, aspect, `count`, code) VALUES " \
+                        "('{condition}', '{transit_vs_life}', {aspect}, {count}, {code})" \
+                                .format(condition=condition, transit_vs_life=column, aspect=aspect, count=count, code=config.TRADING_CODE)
+                    config.SQLALCHEMY_DATABASE_ENGINE.execute(insert_sql)
+            z = 999
+        except Exception as e:
+            return "Class: %s method: %s %s " % (
+                StkBasicInfoService.__class__, sys._getframe().f_code.co_name, e)
