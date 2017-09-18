@@ -7,6 +7,12 @@ class AstroAspect:
 
     @staticmethod
     def transit_vs_life_aspect(transit_chart, life_chart):
+        """
+        计算流年vs本命行星角度
+        :param transit_chart:
+        :param life_chart:
+        :return:
+        """
         life_object_list = []
         for a in range(len(config.ALL_OBJECTS)):
             life_object_list.append(life_chart.get(config.ALL_OBJECTS[a]))
@@ -18,7 +24,7 @@ class AstroAspect:
         transit_vs_life_list = []
         for y in range(len(transit_object_list)):
             for z in range(len(life_object_list)):
-                aspect = getAspect(transit_object_list[y], life_object_list[z], const.MAJOR_ASPECTS)
+                aspect = getAspect(transit_object_list[y], life_object_list[z], config.ALL_ASPECTS)
                 transit_vs_life_list.append(aspect)
 
         final_dic = {}

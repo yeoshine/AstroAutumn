@@ -13,6 +13,7 @@ SQLALCHEMY_DATABASE_URI = "mysql://root:000000@127.0.0.1/autumndb?charset=utf8mb
 
 SQLALCHEMY_DATABASE_ENGINE = create_engine(SQLALCHEMY_DATABASE_URI)
 
+#本命行星列表
 LIFE_OBJECTS = [
     'life_sun',
     'life_moon',
@@ -26,6 +27,7 @@ LIFE_OBJECTS = [
     # 'life_pluto'
 ]
 
+#本命行星字典
 LIFE_OBJECTS_VALUES = {
     'Sun':'life_sun',
     'Moon':'life_moon',
@@ -39,6 +41,7 @@ LIFE_OBJECTS_VALUES = {
     'Pluto': 'life_pluto'
 }
 
+#流年行星字典
 TRANSIT_OBJECTS_VALUES = {
     'Sun':'transit_sun',
     'Moon':'transit_moon',
@@ -52,7 +55,7 @@ TRANSIT_OBJECTS_VALUES = {
     'Pluto': 'transit_pluto'
 }
 
-
+#流年行星列表
 TRANSIT_OBJECTS = [
     'transit_sun',
     'transit_moon',
@@ -66,6 +69,7 @@ TRANSIT_OBJECTS = [
     'transit_pluto'
 ]
 
+#行星
 SUN = 'Sun'
 MOON = 'Moon'
 MERCURY = 'Mercury'
@@ -77,22 +81,29 @@ URANUS = 'Uranus'
 NEPTUNE = 'Neptune'
 PLUTO = 'Pluto'
 
+#所有行星列表
 ALL_OBJECTS = [
     'Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn',
     'Uranus', 'Neptune', 'Pluto'
 ]
 
-ASPECT_LIST = [0, 60, 90, 120, 180]
+#相位
+MAJOR_ASPECTS = [0, 60, 90, 120, 180]
+MINOR_ASPECTS = [30, 36, 45, 72, 108, 135, 144, 150]
+ALL_ASPECTS = MAJOR_ASPECTS + MINOR_ASPECTS
 
+#默认上市时间
 DEFAULT_LISTING_TIME_HOUR = 9
 DEFAULT_LISTING_TIME_MINUTE = 30
 
+#流年使用时间
 TRANSIT_DEFAULT_TIME_HOUR = 12
 TRANSIT_DEFAULT_TIME_MINUTE = 00
 
-
+#上海交易所经纬度
 SH_LONG = '121e32'
 SH_LAT  = '31n13'
 
+#深圳交易所经纬度
 SZ_LONG = '114e02'
 SZ_LAT  = '22n31'

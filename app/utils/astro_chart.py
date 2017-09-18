@@ -5,7 +5,7 @@ from flatlib.geopos import GeoPos
 from flatlib.chart import Chart
 from flatlib.aspects import *
 
-
+#生成星盘类
 class AstroChart:
 
     MINUTE_DEVIATION = -1
@@ -44,4 +44,3 @@ class AstroChart:
     @staticmethod
     def flat_chart(date, pos):
         return Chart(date, pos, IDs=const.LIST_OBJECTS)
-

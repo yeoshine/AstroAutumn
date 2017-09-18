@@ -14,16 +14,23 @@ class AstroStockService:
 
     @staticmethod
     def get_stock_info(trading_code=config.TRADING_CODE):
+        """获取股票信息"""
         stock_info = StkBasicInfo.query.filter_by(
             TradingCode=trading_code).first()
         return stock_info
 
+
     @staticmethod
     def get_daily_quote(trading_code=config.TRADING_CODE):
+        """
+        获取日线数据写入表
+        :param trading_code:
+        :return:
+        """
         try:
             start = AstroStockService.get_stock_info().ListingDate
             df = ts.get_h_data(trading_code, start=str(start), retry_count=10)
-            df.to_sql(
+            return df.to_sql(
                 'tus_stk_daily_quote',
                 config.SQLALCHEMY_DATABASE_ENGINE,
                 schema='autumndb',
@@ -34,6 +41,10 @@ class AstroStockService:
 
     @staticmethod
     def get_column_name():
+        """
+        获取流年vs本命表字段名
+        :return:
+        """
         try:
             column_list = []
             for a in range(len(config.LIFE_OBJECTS)):
@@ -56,6 +67,11 @@ class AstroStockService:
 
     @staticmethod
     def transit_vs_life(trading_code=config.TRADING_CODE):
+        """
+        计算流年vs本命相位入库
+        :param trading_code:
+        :return:
+        """
         try:
             stock_info = AstroStockService.get_stock_info(trading_code)
             listing_date = stock_info.ListingDate
@@ -101,6 +117,10 @@ class AstroStockService:
 
     @staticmethod
     def get_aspect_count():
+        """
+        计算给定条件下，流年vs本命相位出现次数入库
+        :return:
+        """
         try:
             column_list = []
             for a in range(len(config.LIFE_OBJECTS)):
@@ -115,8 +135,8 @@ class AstroStockService:
             condition = "p_change < 0"
             for i in range(len(column_list)):
                 column = column_list[i]
-                for j in range(len(config.ASPECT_LIST)):
-                    aspect = config.ASPECT_LIST[j]
+                for j in range(len(config.ALL_ASPECTS)):
+                    aspect = config.ALL_ASPECTS[j]
                     sql = "select count(*) from `astro_transit_vs_life` a left join `tu_stk_daily_quote` b " \
                           "on a.`trading_code` = b.`code` and a.`trading_date` = b.`date` where " \
                           "b.{where} and a.{column} = {aspect}" .format(where=condition, column=column, aspect=aspect)
