@@ -10,7 +10,7 @@ from ..utils.astro_aspect import AstroAspect
 import sys
 
 
-class StkBasicInfoService:
+class AstroStockService:
 
     @staticmethod
     def get_stock_info(trading_code=config.TRADING_CODE):
@@ -20,36 +20,44 @@ class StkBasicInfoService:
 
     @staticmethod
     def get_daily_quote(trading_code=config.TRADING_CODE):
-        start = StkBasicInfoService.get_stock_info().ListingDate
-        df = ts.get_h_data(trading_code, start=str(start), retry_count=10)
-        df.to_sql(
-            'tus_stk_daily_quote',
-            config.SQLALCHEMY_DATABASE_ENGINE,
-            schema='autumndb',
-            if_exists='append')
+        try:
+            start = AstroStockService.get_stock_info().ListingDate
+            df = ts.get_h_data(trading_code, start=str(start), retry_count=10)
+            df.to_sql(
+                'tus_stk_daily_quote',
+                config.SQLALCHEMY_DATABASE_ENGINE,
+                schema='autumndb',
+                if_exists='append')
+        except Exception as e:
+            return "Class: %s method: %s %s " % (
+                AstroStockService.__class__, sys._getframe().f_code.co_name, e)
 
     @staticmethod
     def get_column_name():
-        column_list = []
-        for a in range(len(config.LIFE_OBJECTS)):
-            for b in range(len(config.TRANSIT_OBJECTS)):
-                column_list.append(
-                    config.TRANSIT_OBJECTS[b] +
-                    '_' +
-                    'vs' +
-                    '_' +
-                    config.LIFE_OBJECTS[a])
-        string = ''
-        for column in range(len(column_list)):
-            string += (
-                "`{column}` int(10) DEFAULT NULL," .format(
-                    column=column_list[column]))
-        return string
+        try:
+            column_list = []
+            for a in range(len(config.LIFE_OBJECTS)):
+                for b in range(len(config.TRANSIT_OBJECTS)):
+                    column_list.append(
+                        config.TRANSIT_OBJECTS[b] +
+                        '_' +
+                        'vs' +
+                        '_' +
+                        config.LIFE_OBJECTS[a])
+            string = ''
+            for column in range(len(column_list)):
+                string += (
+                    "`{column}` int(10) DEFAULT NULL," .format(
+                        column=column_list[column]))
+            return string
+        except Exception as e:
+            return "Class: %s method: %s %s " % (
+                AstroStockService.__class__, sys._getframe().f_code.co_name, e)
 
     @staticmethod
     def transit_vs_life(trading_code=config.TRADING_CODE):
         try:
-            stock_info = StkBasicInfoService.get_stock_info(trading_code)
+            stock_info = AstroStockService.get_stock_info(trading_code)
             listing_date = stock_info.ListingDate
             if stock_info.ExchangeCode == config.SH_EXCHANGECODE:
                 lat = config.SH_LAT
@@ -89,7 +97,7 @@ class StkBasicInfoService:
                     config.SQLALCHEMY_DATABASE_ENGINE.execute(up_sql)
         except Exception as e:
             return "Class: %s method: %s %s " % (
-                StkBasicInfoService.__class__, sys._getframe().f_code.co_name, e)
+                AstroStockService.__class__, sys._getframe().f_code.co_name, e)
 
     @staticmethod
     def get_aspect_count():
@@ -116,8 +124,8 @@ class StkBasicInfoService:
                     count = result.fetchone()[0]
                     insert_sql = "INSERT INTO `astro_aspect_count` (`condition`, transit_vs_life, aspect, `count`, code) VALUES " \
                         "('{condition}', '{transit_vs_life}', {aspect}, {count}, {code})" \
-                                .format(condition=condition, transit_vs_life=column, aspect=aspect, count=count, code=config.TRADING_CODE)
+                        .format(condition=condition, transit_vs_life=column, aspect=aspect, count=count, code=config.TRADING_CODE)
                     config.SQLALCHEMY_DATABASE_ENGINE.execute(insert_sql)
         except Exception as e:
             return "Class: %s method: %s %s " % (
-                StkBasicInfoService.__class__, sys._getframe().f_code.co_name, e)
+                AstroStockService.__class__, sys._getframe().f_code.co_name, e)
