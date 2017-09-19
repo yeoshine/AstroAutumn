@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import pymysql
+pymysql.install_as_MySQLdb()
 from sqlalchemy import create_engine
 
 ###系统相关配置####################################################################
