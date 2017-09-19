@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 ###系统相关配置####################################################################
 DEBUG = True
-WECHAT_TOKEN = ''
+WECHAT_TOKEN = 'lsdhjfjkdsfhjkdshf121432490rfud'
 SQLALCHEMY_DATABASE_URI = "mysql://root:000000@127.0.0.1/autumndb?charset=utf8mb4"
 SQLALCHEMY_DATABASE_ENGINE = create_engine(SQLALCHEMY_DATABASE_URI)
 
