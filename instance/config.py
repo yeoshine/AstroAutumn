@@ -2,17 +2,25 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy import create_engine
 
-
+###系统相关配置####################################################################
 DEBUG = True
-
-TRADING_CODE = '600642'
-
-SH_EXCHANGECODE = 101
-
+WECHAT_TOKEN = ''
 SQLALCHEMY_DATABASE_URI = "mysql://root:000000@127.0.0.1/autumndb?charset=utf8mb4"
-
 SQLALCHEMY_DATABASE_ENGINE = create_engine(SQLALCHEMY_DATABASE_URI)
 
+###股票相关配置####################################################################
+#股票代码
+TRADING_CODE = '600642'
+#上海交易所代码
+SH_EXCHANGECODE = 101
+#上海交易所经纬度
+SH_LONG = '121e32'
+SH_LAT  = '31n13'
+#深圳交易所经纬度
+SZ_LONG = '114e02'
+SZ_LAT  = '22n31'
+
+###星盘相关配置####################################################################
 #本命行星列表
 LIFE_OBJECTS = [
     'life_sun',
@@ -100,10 +108,3 @@ DEFAULT_LISTING_TIME_MINUTE = 30
 TRANSIT_DEFAULT_TIME_HOUR = 12
 TRANSIT_DEFAULT_TIME_MINUTE = 00
 
-#上海交易所经纬度
-SH_LONG = '121e32'
-SH_LAT  = '31n13'
-
-#深圳交易所经纬度
-SZ_LONG = '114e02'
-SZ_LAT  = '22n31'

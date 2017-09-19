@@ -111,12 +111,13 @@ class AstroStockService:
                     up_sql = "UPDATE astro_transit_vs_life set {key} = {values} WHERE trading_code = {trading_code} and trading_date = '{trading_date}'" .format(
                         key=key, values=aspect_dict[key], trading_code=trading_code, trading_date=trading_date)
                     config.SQLALCHEMY_DATABASE_ENGINE.execute(up_sql)
+            return True
         except Exception as e:
             return "Class: %s method: %s %s " % (
                 AstroStockService.__class__, sys._getframe().f_code.co_name, e)
 
     @staticmethod
-    def get_aspect_count():
+    def get_aspect_count(condition):
         """
         计算给定条件下，流年vs本命相位出现次数入库
         :return:
@@ -131,8 +132,7 @@ class AstroStockService:
                         'vs' +
                         '_' +
                         config.LIFE_OBJECTS[a])
-            # condition = "p_change > 0"
-            condition = "p_change < 0"
+
             for i in range(len(column_list)):
                 column = column_list[i]
                 for j in range(len(config.ALL_ASPECTS)):
@@ -146,6 +146,7 @@ class AstroStockService:
                         "('{condition}', '{transit_vs_life}', {aspect}, {count}, {code})" \
                         .format(condition=condition, transit_vs_life=column, aspect=aspect, count=count, code=config.TRADING_CODE)
                     config.SQLALCHEMY_DATABASE_ENGINE.execute(insert_sql)
+            return True
         except Exception as e:
             return "Class: %s method: %s %s " % (
                 AstroStockService.__class__, sys._getframe().f_code.co_name, e)
