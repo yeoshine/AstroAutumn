@@ -12,16 +12,8 @@ class WechatService:
     def message(data):
         msg = parse_message(data)
         if msg.type == 'text':
-            app.logger.warning(
-                u'FromUserName: {FromUserName}, ' .format(
-                    FromUserName=str(
-                        msg.id +
-                        msg.target +
-                        msg.type +
-                        msg.create_time +
-                        msg.source +
-                        msg.time)))
-            reply = TextReply(content='text reply', message=msg)
+            app.logger.warning(u'FromUserName: {FromUserName}, ' .format(FromUserName=TextMessage(msg).content))
+            reply=TextReply(content='text reply', message=msg)
         else:
-            reply = create_reply('Sorry, can not handle this for now', msg)
+            reply=create_reply('Sorry, can not handle this for now', msg)
         return reply.render()
