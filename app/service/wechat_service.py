@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from wechatpy import parse_message, create_reply
 from wechatpy.replies import TextReply
+from wechatpy.messages import *
 from .. import app
 
 
@@ -12,7 +13,7 @@ class WechatService:
         msg = parse_message(data)
         if msg.type == 'text':
             app.logger.warning(
-                u'FromUserName: {FromUserName}, ' .format(FromUserName=msg.Content))
+                u'FromUserName: {FromUserName}, ' .format(FromUserName=TextMessage.content))
             reply = TextReply(content='text reply', message=msg)
         else:
             reply = create_reply('Sorry, can not handle this for now', msg)
