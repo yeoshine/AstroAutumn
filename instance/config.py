@@ -4,6 +4,7 @@ import pymysql
 pymysql.install_as_MySQLdb()
 from sqlalchemy import create_engine
 
+
 ###系统相关配置####################################################################
 DEBUG = True
 WECHAT_TOKEN = 'lsdhjfjkdsfhjkdshf121432490rfud'
