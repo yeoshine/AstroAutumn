@@ -10,3 +10,7 @@ tushare
 flatlib
 wechatpy
 pyOpenSSL
+celery
+wechat_sdk
+redis
+pymysql

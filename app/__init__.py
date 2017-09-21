@@ -3,6 +3,7 @@
 
 from flask import Flask
 import logging
+from redis import Redis
 from logging.handlers import RotatingFileHandler
 
 
@@ -20,3 +21,5 @@ handler.setFormatter(logging.Formatter(
 ))
 handler.setLevel(logging.WARNING)
 app.logger.addHandler(handler)
+
+redis = Redis()

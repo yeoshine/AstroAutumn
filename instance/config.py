@@ -10,6 +10,15 @@ DEBUG = False
 WECHAT_TOKEN = 'lsdhjfjkdsfhjkdshf121432490rfud'
 SQLALCHEMY_DATABASE_URI = "mysql://root:000000@127.0.0.1/autumndb?charset=utf8mb4"
 SQLALCHEMY_DATABASE_ENGINE = create_engine(SQLALCHEMY_DATABASE_URI)
+CELERY_BROKER_URL = 'redis://redispass@$*^$^:127.0.0.1:6379/0',
+CELERY_RESULT_BACKEND = 'redis://redispass@$*^$^:127.0.0.1:6379/1'
+CELERY_TIMEZONE = 'Asia/Shanghai'
+
+###微信公众平台配置####################################################################
+APP_ID = ""
+APP_SECRET = ""
+TOKEN = ""
+EncodingAESKey = ""
 
 ###股票相关配置####################################################################
 #股票代码
