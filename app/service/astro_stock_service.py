@@ -175,7 +175,7 @@ class AstroStockService:
     @staticmethod
     def save_stock_name(code, name):
         redis_prefix = "stock:code:"
-        redis.set(redis_prefix + code, name)
+        return redis.set(redis_prefix + code, name)
 
 
     @staticmethod
