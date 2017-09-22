@@ -195,4 +195,6 @@ def text_response():
     # 清除行首空格
     message.content = message.content.lstrip()
 
+    app.logger.warning(u"回复消息: %s" % response)
+
     return response
