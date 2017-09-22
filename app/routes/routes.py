@@ -27,4 +27,4 @@ def handle_wechat_request():
 
 @app.route("/code", methods=['GET', 'POST'])
 def get_code():
-    AstroStockService.get_all_code()
+    return AstroStockService.get_all_code()
