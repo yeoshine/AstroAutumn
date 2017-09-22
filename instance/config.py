@@ -21,8 +21,10 @@ REDIS_PASSWORD = 'redispass@$*^$^'
 SQLALCHEMY_DATABASE_URI = "mysql://{user}:{password}@{host}/{database}?charset={charset}" .format(
     user=MYSQL_USER, password=MYSQL_PASSWORD, host=MYSQL_HOST, database=MYSQL_DATABASE, charset=MYSQL_CHARSET)
 SQLALCHEMY_DATABASE_ENGINE = create_engine(SQLALCHEMY_DATABASE_URI)
-CELERY_BROKER_URL = 'redis://{password}:{host}:{port}/0' .format(password=REDIS_PASSWORD, host=REDIS_HOST, port=REDIS_PORT)
-CELERY_RESULT_BACKEND = 'redis://{password}:{host}:{port}/1' .format(password=REDIS_PASSWORD, host=REDIS_HOST, port=REDIS_PORT)
+CELERY_BROKER_URL = 'redis://{password}:{host}:{port}/0' .format(
+    password=REDIS_PASSWORD, host=REDIS_HOST, port=REDIS_PORT)
+CELERY_RESULT_BACKEND = 'redis://{password}:{host}:{port}/1' .format(
+    password=REDIS_PASSWORD, host=REDIS_HOST, port=REDIS_PORT)
 CELERY_TIMEZONE = 'Asia/Shanghai'
 
 ###微信公众平台配置####################################################################
@@ -31,9 +33,9 @@ APP_SECRET = "50b8b8b835a6c9777e939775006859e0"
 TOKEN = "fsdhk23983ghjfdslklfd"
 EncodingAESKey = ""
 
-###微信公众平台回复消息####################################################################
-DEFAULT_RESPONSE_TEXT = u"请回复正确的文字股票代码获取下个交易日股票涨跌信息"
-
+###微信公众平台回复消息#############################################################
+DEFAULT_RESPONSE_TEXT = u"请回复正确的文字股票代码获取下个交易日股票涨跌信息,如回复:000001," \
+                        u"将收到系统回复\"你好,你关注的股票000001(平安银行),下个交易日呈现上涨趋势.\""
 
 
 ###股票相关配置####################################################################

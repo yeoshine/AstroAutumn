@@ -23,8 +23,3 @@ def handle_wechat_request():
     else:
         # 微信接入验证
         return request.args.get('echostr', '')
-
-
-@app.route("/code", methods=['GET', 'POST'])
-def get_code():
-    return AstroStockService.get_all_code()

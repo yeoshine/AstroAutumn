@@ -190,7 +190,7 @@ def set_msg_type(msg_type):
 def text_response():
     """文本类型回复"""
     # 默认回复微信消息
-    response = 'success'
+    response = config.DEFAULT_RESPONSE_TEXT
     # 替换全角空格为半角空格
     message.content = message.content.replace(u'　', ' ')
     # 清除行首空格
@@ -208,5 +208,4 @@ def text_response():
 @set_msg_type('news')
 def image_response():
     response = config.DEFAULT_RESPONSE_TEXT
-
     return wechat.response_text(response)
