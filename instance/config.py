@@ -15,10 +15,10 @@ CELERY_RESULT_BACKEND = 'redis://redispass@$*^$^:127.0.0.1:6379/1'
 CELERY_TIMEZONE = 'Asia/Shanghai'
 
 ###微信公众平台配置####################################################################
-APP_ID = ""
-APP_SECRET = ""
-TOKEN = ""
-EncodingAESKey = ""
+APP_ID = "wxabb5cf74bd0dc6a8"
+APP_SECRET = "d85dd8720a73e6d19e36c9123994b1c1"
+TOKEN = "lsdhjfjkdsfhjkdshf121432490rfud"
+EncodingAESKey = "M4wX1aiERyGhXA6llFe1pnHm4klicAW2ILtQf6K3Xjh"
 
 ###股票相关配置####################################################################
 #股票代码
