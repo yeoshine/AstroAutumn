@@ -7,11 +7,22 @@ from sqlalchemy import create_engine
 
 ###系统相关配置####################################################################
 DEBUG = False
-WECHAT_TOKEN = 'lsdhjfjkdsfhjkdshf121432490rfud'
-SQLALCHEMY_DATABASE_URI = "mysql://root:000000@127.0.0.1/autumndb?charset=utf8mb4"
+
+MYSQL_HOST = '127.0.0.1'
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = '000000'
+MYSQL_CHARSET = 'utf8mb4'
+MYSQL_DATABASE = 'autumndb'
+
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = 6379
+REDIS_PASSWORD = 'redispass@$*^$^'
+
+SQLALCHEMY_DATABASE_URI = "mysql://{user}:{password}@{host}/{database}?charset={charset}" .format(
+    user=MYSQL_USER, password=MYSQL_PASSWORD, host=MYSQL_HOST, database=MYSQL_DATABASE, charset=MYSQL_CHARSET)
 SQLALCHEMY_DATABASE_ENGINE = create_engine(SQLALCHEMY_DATABASE_URI)
-CELERY_BROKER_URL = 'redis://redispass@$*^$^:127.0.0.1:6379/0',
-CELERY_RESULT_BACKEND = 'redis://redispass@$*^$^:127.0.0.1:6379/1'
+CELERY_BROKER_URL = 'redis://{password}:{host}:{port}/0' .format(password=REDIS_PASSWORD, host=REDIS_HOST, port=REDIS_PORT)
+CELERY_RESULT_BACKEND = 'redis://{password}:{host}:{port}/1' .format(password=REDIS_PASSWORD, host=REDIS_HOST, port=REDIS_PORT)
 CELERY_TIMEZONE = 'Asia/Shanghai'
 
 ###微信公众平台配置####################################################################
@@ -21,19 +32,19 @@ TOKEN = "lsdhjfjkdsfhjkdshf121432490rfud"
 EncodingAESKey = "M4wX1aiERyGhXA6llFe1pnHm4klicAW2ILtQf6K3Xjh"
 
 ###股票相关配置####################################################################
-#股票代码
+# 股票代码
 TRADING_CODE = '600642'
-#上海交易所代码
+# 上海交易所代码
 SH_EXCHANGECODE = 101
-#上海交易所经纬度
+# 上海交易所经纬度
 SH_LONG = '121e32'
-SH_LAT  = '31n13'
-#深圳交易所经纬度
+SH_LAT = '31n13'
+# 深圳交易所经纬度
 SZ_LONG = '114e02'
-SZ_LAT  = '22n31'
+SZ_LAT = '22n31'
 
 ###星盘相关配置####################################################################
-#本命行星列表
+# 本命行星列表
 LIFE_OBJECTS = [
     'life_sun',
     'life_moon',
@@ -47,10 +58,10 @@ LIFE_OBJECTS = [
     # 'life_pluto'
 ]
 
-#本命行星字典
+# 本命行星字典
 LIFE_OBJECTS_VALUES = {
-    'Sun':'life_sun',
-    'Moon':'life_moon',
+    'Sun': 'life_sun',
+    'Moon': 'life_moon',
     'Mercury': 'life_mercury',
     'Venus': 'life_venus',
     'Mars': 'life_mars',
@@ -61,10 +72,10 @@ LIFE_OBJECTS_VALUES = {
     'Pluto': 'life_pluto'
 }
 
-#流年行星字典
+# 流年行星字典
 TRANSIT_OBJECTS_VALUES = {
-    'Sun':'transit_sun',
-    'Moon':'transit_moon',
+    'Sun': 'transit_sun',
+    'Moon': 'transit_moon',
     'Mercury': 'transit_mercury',
     'Venus': 'transit_venus',
     'Mars': 'transit_mars',
@@ -75,7 +86,7 @@ TRANSIT_OBJECTS_VALUES = {
     'Pluto': 'transit_pluto'
 }
 
-#流年行星列表
+# 流年行星列表
 TRANSIT_OBJECTS = [
     'transit_sun',
     'transit_moon',
@@ -89,7 +100,7 @@ TRANSIT_OBJECTS = [
     'transit_pluto'
 ]
 
-#行星
+# 行星
 SUN = 'Sun'
 MOON = 'Moon'
 MERCURY = 'Mercury'
@@ -101,22 +112,21 @@ URANUS = 'Uranus'
 NEPTUNE = 'Neptune'
 PLUTO = 'Pluto'
 
-#所有行星列表
+# 所有行星列表
 ALL_OBJECTS = [
     'Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn',
     'Uranus', 'Neptune', 'Pluto'
 ]
 
-#相位
+# 相位
 MAJOR_ASPECTS = [0, 60, 90, 120, 180]
 MINOR_ASPECTS = [30, 36, 45, 72, 108, 135, 144, 150]
 ALL_ASPECTS = MAJOR_ASPECTS + MINOR_ASPECTS
 
-#默认上市时间
+# 默认上市时间
 DEFAULT_LISTING_TIME_HOUR = 9
 DEFAULT_LISTING_TIME_MINUTE = 30
 
-#流年使用时间
+# 流年使用时间
 TRANSIT_DEFAULT_TIME_HOUR = 12
 TRANSIT_DEFAULT_TIME_MINUTE = 00
-

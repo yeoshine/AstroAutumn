@@ -5,7 +5,7 @@ from flask import Flask
 import logging
 from redis import Redis
 from logging.handlers import RotatingFileHandler
-
+from instance import config
 
 app = Flask(__name__, instance_relative_config=True)
 # 加载配置
@@ -22,4 +22,4 @@ handler.setFormatter(logging.Formatter(
 handler.setLevel(logging.WARNING)
 app.logger.addHandler(handler)
 
-redis = Redis(password="redispass@$*^$^")
+redis = Redis(password=config.REDIS_PASSWORD)
