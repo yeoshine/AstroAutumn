@@ -80,6 +80,7 @@ def set_user_info(openid):
             try:
                 wechat = init_wechat_sdk()
                 user_info = wechat.get_user_info(openid)
+                app.logger.warning(u"user_info: %s" % user_info)
                 if 'nickname' not in user_info:
                     raise KeyError(user_info)
             except Exception as e:
