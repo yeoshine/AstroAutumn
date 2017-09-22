@@ -166,6 +166,7 @@ class AstroStockService:
                 rcode = re.sub('[shsz]', '', code)
                 if AstroStockService.return_stock_name(rcode) is None:
                     AstroStockService.save_stock_name(rcode, name)
+            sys.exit()
         except Exception as e:
             return "Class: %s method: %s %s " % (
                 AstroStockService.__class__, sys._getframe().f_code.co_name, e)
