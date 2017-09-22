@@ -22,4 +22,4 @@ handler.setFormatter(logging.Formatter(
 handler.setLevel(logging.WARNING)
 app.logger.addHandler(handler)
 
-redis = Redis()
+redis = Redis(password="redispass@$*^$^")
