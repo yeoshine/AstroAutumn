@@ -7,6 +7,7 @@ from flask import request, redirect
 from wechat_sdk import WechatBasic
 from ..models.user import User
 from ..plugins.state import *
+from instance import config
 
 
 def check_signature(func):
@@ -196,5 +197,16 @@ def text_response():
     message.content = message.content.lstrip()
 
     app.logger.warning(u"回复消息: %s" % response)
+
+    return wechat.response_text(response)
+
+
+@set_msg_type('image')
+@set_msg_type('voice')
+@set_msg_type('video')
+@set_msg_type('music')
+@set_msg_type('news')
+def image_response():
+    response = config.DEFAULT_RESPONSE_TEXT
 
     return wechat.response_text(response)
