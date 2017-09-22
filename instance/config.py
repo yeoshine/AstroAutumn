@@ -9,9 +9,9 @@ from sqlalchemy import create_engine
 DEBUG = False
 
 MYSQL_HOST = '127.0.0.1'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = '000000'
-MYSQL_CHARSET = 'utf8mb4'
+MYSQL_USER = 'autumn'
+MYSQL_PASSWORD = 'autumn'
+MYSQL_CHARSET = 'utf8'
 MYSQL_DATABASE = 'autumndb'
 
 REDIS_HOST = '127.0.0.1'
