@@ -197,4 +197,4 @@ def text_response():
 
     app.logger.warning(u"回复消息: %s" % response)
 
-    return response
+    return wechat.response_text(response)
