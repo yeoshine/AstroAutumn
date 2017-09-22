@@ -7,7 +7,8 @@ import tushare as ts
 from instance import config
 from ..utils.astro_chart import AstroChart
 from ..utils.astro_aspect import AstroAspect
-import sys
+import sys, urllib3, json ,re
+from app import redis
 
 
 class AstroStockService:
@@ -150,3 +151,34 @@ class AstroStockService:
         except Exception as e:
             return "Class: %s method: %s %s " % (
                 AstroStockService.__class__, sys._getframe().f_code.co_name, e)
+
+    @staticmethod
+    def get_all_code():
+        try:
+            host = "www.ctxalgo.com"
+            url = "http://www.ctxalgo.com/api/stocks"
+            http_pool = urllib3.HTTPConnectionPool(host)
+            r = http_pool.urlopen('GET', url)
+            data_dict = json.loads(r.data)
+            for k,v in data_dict.items():
+                code = k
+                name = v
+                rcode = re.sub('[shsz]', '', code)
+                if AstroStockService.return_stock_name(rcode) is None:
+                    AstroStockService.save_stock_name(rcode, name)
+        except Exception as e:
+            return "Class: %s method: %s %s " % (
+                AstroStockService.__class__, sys._getframe().f_code.co_name, e)
+
+
+    @staticmethod
+    def save_stock_name(code, name):
+        redis_prefix = "stock:code:"
+        redis.set(redis_prefix + code, name)
+
+
+    @staticmethod
+    def return_stock_name(code):
+        redis_prefix = "stock:code:"
+        return redis.get(redis_prefix + code)
+

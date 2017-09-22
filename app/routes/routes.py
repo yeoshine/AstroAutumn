@@ -3,6 +3,7 @@
 
 from .. import app
 from ..service.wechat_service import *
+from ..service.astro_stock_service import AstroStockService
 from flask import request, abort
 import sys
 
@@ -22,3 +23,8 @@ def handle_wechat_request():
     else:
         # 微信接入验证
         return request.args.get('echostr', '')
+
+
+@app.route("/code", methods=['GET', 'POST'])
+def get_code():
+    AstroStockService.get_all_code()
