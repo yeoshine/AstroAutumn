@@ -29,7 +29,7 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 APP_ID = "wx8a0a0bc4b5489057"
 APP_SECRET = "50b8b8b835a6c9777e939775006859e0"
 TOKEN = "fsdhk23983ghjfdslklfd"
-EncodingAESKey = "M4wX1aiERyGhXA6llFe1pnHm4klicAW2ILtQf6K3Xjh"
+EncodingAESKey = ""
 
 ###股票相关配置####################################################################
 # 股票代码
