@@ -28,7 +28,7 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 ###微信公众平台配置####################################################################
 APP_ID = "wxabb5cf74bd0dc6a8"
 APP_SECRET = "d85dd8720a73e6d19e36c9123994b1c1"
-TOKEN = "lsdhjfjkdsfhjkdshf121432490rfud"
+TOKEN = "fsdhk23983ghjfdslklfd"
 EncodingAESKey = "M4wX1aiERyGhXA6llFe1pnHm4klicAW2ILtQf6K3Xjh"
 
 ###股票相关配置####################################################################
