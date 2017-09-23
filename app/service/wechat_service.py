@@ -194,7 +194,7 @@ def text_response():
     # 清除行首空格
     message.content = message.content.lstrip()
 
-    app.logger.warning(u"收到消息：%s，回复消息: %s" % message.content, response)
+    app.logger.warning(u"收到消息: %s，回复消息: %s" % message.content, response)
 
     return wechat.response_text(response)
 
