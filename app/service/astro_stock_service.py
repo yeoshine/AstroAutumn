@@ -164,8 +164,8 @@ class AstroStockService:
                 code = k
                 name = v
                 rcode = re.sub('[shsz]', '', code)
-                if AstroStockService.return_stock_name(rcode) is None:
-                    AstroStockService.save_stock_name(rcode, name)
+                if AstroStockService.return_stock_code(rcode) is None:
+                    AstroStockService.save_stock_code(rcode, name)
             return True
         except Exception as e:
             return "Class: %s method: %s %s " % (
@@ -173,13 +173,11 @@ class AstroStockService:
 
 
     @staticmethod
-    def save_stock_name(code, name):
-        redis_prefix = "stock:code:"
-        return redis.set(redis_prefix + code, name)
+    def save_stock_code(code, name):
+        return redis.set(config.REDIS_STOCK_CODE_NAMESPACE + code, name)
 
 
     @staticmethod
-    def return_stock_name(code):
-        redis_prefix = "stock:code:"
-        return redis.get(redis_prefix + code)
+    def return_stock_code(code):
+        return redis.get(config.REDIS_STOCK_CODE_NAMESPACE + code)
 

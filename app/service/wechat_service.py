@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from functools import wraps
 import time
-from .. import app, redis
+from .. import app
 from flask import request, redirect
 from wechat_sdk import WechatBasic
 from ..models.user import User
@@ -36,8 +36,7 @@ def check_signature(func):
 
 def set_user_info(openid):
     """保存用户信息"""
-    redis_prefix = "wechat:user:"
-    cache = redis.hexists(redis_prefix + openid, 'nickname')
+    cache = redis.hexists(config.REDIS_WECHAT_USER_NAMESPACE + openid, 'nickname')
 
     if not cache:
         user_info = User.query.filter_by(openid=openid).first()
@@ -64,7 +63,7 @@ def set_user_info(openid):
 
         if user_info:
             # 写入缓存
-            redis.hmset(redis_prefix + user_info.openid, {
+            redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + user_info.openid, {
                 "nickname": user_info.nickname,
                 "realname": user_info.realname,
                 "classname": user_info.classname,
@@ -96,7 +95,7 @@ def set_user_info(openid):
                 user.headimgurl = user_info['headimgurl']
                 user.update()
 
-                redis.hmset(redis_prefix + openid, {
+                redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + openid, {
                     "nickname": user_info['nickname'],
                     "sex": user_info['sex'],
                     "province": user_info['province'],
@@ -108,8 +107,7 @@ def set_user_info(openid):
 
 def is_user_exists(openid):
     """用户是否存在数据库"""
-    redis_prefix = "wechat:user:"
-    cache = redis.exists(redis_prefix + openid)
+    cache = redis.exists(config.REDIS_WECHAT_USER_NAMESPACE + openid)
     if not cache:
         user_info = User.query.filter_by(openid=openid).first()
         if not user_info:
@@ -196,7 +194,7 @@ def text_response():
     # 清除行首空格
     message.content = message.content.lstrip()
 
-    app.logger.warning(u"回复消息: %s" % response)
+    app.logger.warning(u"收到消息：%s，回复消息: %s" % message.content, response)
 
     return wechat.response_text(response)
 
