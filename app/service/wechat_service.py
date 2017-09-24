@@ -194,6 +194,9 @@ def text_response():
     # 清除行首空格
     message.content = message.content.lstrip()
 
+    if message.content.isdigit():
+        if return_stock_code(message.content):
+            pass
 
 
     app.logger.warning(u"收到消息: %s，回复消息: %s" %(message.content, response))

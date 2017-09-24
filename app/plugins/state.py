@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from .. import redis
+from instance import config
 
 
 def set_user_state(openid, state):
@@ -28,3 +29,10 @@ def get_user_last_interact_time(openid):
         return last_time
     else:
         return 0
+
+def save_stock_code(code, name):
+    return redis.set(config.REDIS_STOCK_CODE_NAMESPACE + code, name)
+
+
+def return_stock_code(code):
+    return redis.get(config.REDIS_STOCK_CODE_NAMESPACE + code)

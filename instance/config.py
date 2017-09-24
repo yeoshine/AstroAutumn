@@ -139,3 +139,94 @@ DEFAULT_LISTING_TIME_MINUTE = 30
 # 流年使用时间
 TRANSIT_DEFAULT_TIME_HOUR = 12
 TRANSIT_DEFAULT_TIME_MINUTE = 00
+
+
+# 卜卦行星
+DIVINATION_OBJECTS = [
+    'Sun',
+    'Moon',
+    'Mercury',
+    'Venus',
+    'Mars',
+    'Jupiter',
+    'Saturn'
+]
+
+
+# 行星本身计算分数
+OBJECTS_SCORE = {
+    'Sun': 1,
+    'Moon': 1,
+    'Mercury': 0.5,
+    'Venus': 3,
+    'Mars': -3,
+    'Jupiter': 3,
+    'Saturn': -3,
+}
+
+
+# 卜卦相位计算分数
+DIVINATION_ASPECT_SCORE = {
+    0: 0,
+    60: 1,
+    90: -3,
+    120: 2,
+    180: -2
+}
+
+
+# 卜卦宫(宫主星)权重
+DIVINATION_HOUSE_WEIGHT = {
+    5: 4,
+    11: 3,
+    8: 2
+}
+
+# 十二星座
+ARIES = 'Aries'
+TAURUS = 'Taurus'
+GEMINI = 'Gemini'
+CANCER = 'Cancer'
+LEO = 'Leo'
+VIRGO = 'Virgo'
+LIBRA = 'Libra'
+SCORPIO = 'Scorpio'
+SAGITTARIUS = 'Sagittarius'
+CAPRICORN = 'Capricorn'
+AQUARIUS = 'Aquarius'
+PISCES = 'Pisces'
+
+
+# 星座守护星
+SIGN_RULER = {
+    'Aries' : 'Mars',
+    'Taurus': 'Venus',
+    'Gemini': 'Mercury',
+    'Cancer': 'Moon',
+    'Leo': 'Sun',
+    'Virgo': 'Mercury',
+    'Libra': 'Venus',
+    'Scorpio': 'Mars',
+    'Sagittarius': 'Jupiter',
+    'Capricorn': 'Saturn',
+    'Aquarius': 'Saturn',
+    'Pisces': 'Jupiter'
+}
+
+# 卜卦盘上升星座守护星、太阳、月亮权重
+DIVINATION_ASC_SIGN_RULER_WEIGHT = 3
+DIVINATION_SUN_WEIGHT = 1.5
+DIVINATION_MOON_WEIGHT = 1.5
+
+
+# 卜卦盘宫主星权重
+DIVINATION_5HOUSE_WEIGHT = 3
+DIVINATION_11HOUSE_WEIGHT = 2
+DIVINATION_8HOUSE_WEIGHT = 1.5
+
+
+
+
+
+
+

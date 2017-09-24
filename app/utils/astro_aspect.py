@@ -37,3 +37,25 @@ class AstroAspect:
                 final_dic.setdefault(string, aspect)
 
         return final_dic
+
+
+    @staticmethod
+    def divination_aspect(divination_chart):
+        """
+        计算卜卦盘行星相位，返回相位列表
+        :param divination_chart:
+        :return:
+        """
+        object_list_a = []
+        for a in range(len(config.DIVINATION_OBJECTS)):
+            object_list_a.append(divination_chart.get(config.DIVINATION_OBJECTS[a]))
+
+        object_list_b = object_list_a
+
+        aspect_list = []
+        for x in range(len(object_list_a)):
+            for y in range(len(object_list_b)):
+                aspect = getAspect(object_list_a[x], object_list_b[y], config.MAJOR_ASPECTS)
+                aspect_list.append(aspect)
+
+        return aspect_list

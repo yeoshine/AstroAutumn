@@ -5,6 +5,7 @@ from .. import app
 from ..service.wechat_service import *
 from ..service.astro_stock_service import AstroStockService
 from flask import request, abort
+from ..utils.astro_divination import AstroDivination
 import sys
 
 
@@ -23,3 +24,7 @@ def handle_wechat_request():
     else:
         # 微信接入验证
         return request.args.get('echostr', '')
+
+@app.route("/a", methods=['GET', 'POST'])
+def x():
+    AstroDivination.divination_score()

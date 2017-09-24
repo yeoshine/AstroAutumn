@@ -8,8 +8,7 @@ from instance import config
 from ..utils.astro_chart import AstroChart
 from ..utils.astro_aspect import AstroAspect
 import sys, urllib3, json ,re
-from app import redis
-
+from ..plugins.state import *
 
 class AstroStockService:
 
@@ -164,20 +163,11 @@ class AstroStockService:
                 code = k
                 name = v
                 rcode = re.sub('[shsz]', '', code)
-                if AstroStockService.return_stock_code(rcode) is None:
-                    AstroStockService.save_stock_code(rcode, name)
+                if return_stock_code(rcode) is None:
+                    save_stock_code(rcode, name)
             return True
         except Exception as e:
             return "Class: %s method: %s %s " % (
                 AstroStockService.__class__, sys._getframe().f_code.co_name, e)
 
-
-    @staticmethod
-    def save_stock_code(code, name):
-        return redis.set(config.REDIS_STOCK_CODE_NAMESPACE + code, name)
-
-
-    @staticmethod
-    def return_stock_code(code):
-        return redis.get(config.REDIS_STOCK_CODE_NAMESPACE + code)
 
