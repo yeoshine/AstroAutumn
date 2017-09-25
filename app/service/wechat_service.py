@@ -203,6 +203,7 @@ def text_response():
     if message.content.isdigit():
         code = message.content
         name = return_stock_code(code).decode()
+        app.logger.warning(u"code: %s, name: %s" % (code, name))
         if name:
             result = AstroDivination.handle(str(code), str(name))
             today = datetime.datetime.today().strftime('%Y%m%d')
@@ -210,11 +211,9 @@ def text_response():
             redis.hmset(
                 config.REDIS_WECHAT_USER_DIVINATION +
                 '_' +
-                openid +
+                code +
                 '_' +
-                today +
-                '_' +
-                code,
+                today,
                 {
                     "openid": openid,
                     "code": code,
@@ -223,7 +222,7 @@ def text_response():
                     "performance": result['performance'],
                     "message": result['message'],
                     "divination_time": result['divination_time'],
-                    "message_time": message.time,
+                    "message_time": time.strftime('%Y-%m-%d %H:%M:%S', message.time)
                 })
             response = result['message']
 
