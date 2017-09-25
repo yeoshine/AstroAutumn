@@ -195,22 +195,24 @@ def text_response():
     # 清除行首空格
     message.content = message.content.lstrip()
 
-    code = message.content
-    name = return_stock_code(code)
-    if name:
-        result = AstroDivination.handle(code, name)
-        today = datetime.datetime.today().strftime('%Y%m%d')
+    if message.content.isdigit():
+        code = message.content
+        name = return_stock_code(code)
+        if name:
+            result = AstroDivination.handle(code, name)
+            today = datetime.datetime.today().strftime('%Y%m%d')
 
-        redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + '_' + openid + '_' + today + '_' + code, {
-            "openid": openid,
-            "code": code,
-            "name": name,
-            "score": result['score'],
-            "performance": result['performance'],
-            "message": result['message'],
-            "divination_time": result['divination_time'],
-            "message_time": message.time,
-        })
+            redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + '_' + openid + '_' + today + '_' + code, {
+                "openid": openid,
+                "code": code,
+                "name": name,
+                "score": result['score'],
+                "performance": result['performance'],
+                "message": result['message'],
+                "divination_time": result['divination_time'],
+                "message_time": message.time,
+            })
+            response = result['message']
 
     app.logger.warning(u"收到消息: %s，回复消息: %s" %(message.content, response))
 
