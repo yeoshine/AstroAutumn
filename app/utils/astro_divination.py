@@ -5,7 +5,7 @@ import datetime
 from .astro_chart import AstroChart
 from .astro_aspect import AstroAspect
 from instance import config
-import app
+from .. import app
 
 # 卜卦计算类
 
@@ -23,20 +23,27 @@ class AstroDivination:
     @staticmethod
     def handle(code, name):
         divination_time = AstroDivination.create_divination_time()
-        divination_chart = AstroDivination.create_divination_chart(divination_time)
+        divination_chart = AstroDivination.create_divination_chart(
+            divination_time)
         score = AstroDivination.divination_score(divination_chart)
 
         app.logger.warning(u"code: %s，name: %s" % (code, name))
 
         if score <= config.DIVINATION_MIDDLE_SCORE:
 
-            message = config.DIVINATION_RETURN_TEXT .format(code={code}, name={name}, performance={'下跌'})
+            message = config.DIVINATION_RETURN_TEXT .format(
+                code={code}, name={name}, performance={'下跌'})
             performance = 0
         else:
-            message = config.DIVINATION_RETURN_TEXT .format(code={code}, name={name}, performance={'上涨'})
+            message = config.DIVINATION_RETURN_TEXT .format(
+                code={code}, name={name}, performance={'上涨'})
             performance = 1
         divination_time_str = divination_time.strftime('%Y-%m-%d %H:%M:%S')
-        return {'score': score, 'message': message, 'performance': performance, 'divination_time': divination_time_str}
+        return {
+            'score': score,
+            'message': message,
+            'performance': performance,
+            'divination_time': divination_time_str}
 
     @staticmethod
     def create_divination_time():
