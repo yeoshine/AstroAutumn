@@ -209,8 +209,8 @@ def text_response():
 
             #判断是否有过卜卦记录
             key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + code + ':' + today
-            item = redis.hexists(key, 'code')
-            if not item:
+            redis_message = redis.hget(key, 'message')
+            if not redis_message:
                 redis.hmset(
                     key,
                     {
@@ -227,7 +227,7 @@ def text_response():
                 redis.hincrby(key, 'divination_times', 1)
                 response = result['message']
             else:
-                response = item.message
+                response = redis_message
 
     app.logger.warning(u"收到消息: %s，回复消息: %s" % (message.content, response))
 
