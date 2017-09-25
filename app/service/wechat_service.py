@@ -202,7 +202,7 @@ def text_response():
             result = AstroDivination.handle(code, name)
             today = datetime.datetime.today().strftime('%Y%m%d')
 
-            redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + '_' + openid + '_' + today + '_' + code, {
+            redis.hmset(config.REDIS_WECHAT_USER_DIVINATION + '_' + openid + '_' + today + '_' + code, {
                 "openid": openid,
                 "code": code,
                 "name": name,
