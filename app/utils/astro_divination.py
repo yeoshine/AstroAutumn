@@ -32,11 +32,11 @@ class AstroDivination:
         if score <= config.DIVINATION_MIDDLE_SCORE:
 
             message = config.DIVINATION_RETURN_TEXT .format(
-                code={code}, name={name}, performance={'下跌'})
+                code=code, name=name, performance='下跌')
             performance = 0
         else:
             message = config.DIVINATION_RETURN_TEXT .format(
-                code={code}, name={name}, performance={'上涨'})
+                code=code, name=name, performance='上涨')
             performance = 1
         divination_time_str = divination_time.strftime('%Y-%m-%d %H:%M:%S')
         return {
