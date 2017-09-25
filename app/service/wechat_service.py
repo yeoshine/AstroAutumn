@@ -222,7 +222,7 @@ def text_response():
                         "message": result['message'],
                         "divination_time": result['divination_time'],
                         "divination_times": 1,
-                        "message_time": time.strftime('%Y-%m-%d %H:%M:%S', message.time)
+                        "message_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                     })
                 redis.hincrby(key, 'divination_times', 1)
                 response = result['message']
