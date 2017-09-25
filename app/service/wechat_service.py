@@ -224,9 +224,9 @@ def text_response():
                         "divination_times": 1,
                         "message_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                     })
-                redis.hincrby(key, 'divination_times', 1)
                 response = result['message']
             else:
+                redis.hincrby(key, 'divination_times', 1)
                 response = redis_message.decode()
 
     app.logger.warning(u"收到消息: %s，回复消息: %s" % (message.content, response))
