@@ -20,6 +20,20 @@ class AstroDivination:
     DEFAULT_DIVINATION_LAT = "39n54"
 
     @staticmethod
+    def handle(code, name):
+        divination_time = AstroDivination.create_divination_time()
+        divination_chart = AstroDivination.create_divination_chart(divination_time)
+        score = AstroDivination.divination_score(divination_chart)
+        if score <= config.DIVINATION_MIDDLE_SCORE:
+            message = config.DIVINATION_RETURN_TEXT.format(code={code}, name={name}, performance={'下跌'})
+            performance = 0
+        else:
+            message = config.DIVINATION_RETURN_TEXT.format(code={code}, name={name}, performance={'上涨'})
+            performance = 1
+        divination_time_str = divination_time.strftime('%Y-%m-%d %H:%M:%S')
+        return {'score': score, 'message': message, 'performance': performance, 'divination_time': divination_time_str}
+
+    @staticmethod
     def create_divination_time():
         """
         创建卜卦时间
@@ -30,12 +44,11 @@ class AstroDivination:
             stop=AstroDivination.DEFAULT_RANDOM_END_TIME)
 
     @staticmethod
-    def create_divination_chart():
+    def create_divination_chart(divination_time):
         """
         创建卜卦盘
         :return:
         """
-        divination_time = AstroDivination.create_divination_time()
         chart = AstroChart.handle(
             divination_time.year,
             divination_time.month,
@@ -47,13 +60,12 @@ class AstroDivination:
         return chart
 
     @staticmethod
-    def divination_score():
+    def divination_score(divination_chart):
         """
         卜卦盘分数计算
         卜卦盘行星分数重算,返回只需要的行星和分数,通过相位和权重计算最终分数
         :return:
         """
-        divination_chart = AstroDivination.create_divination_chart()
         # 各宫落在的星座
         house1_sign = divination_chart.houses.content['House1'].sign
         house5_sign = divination_chart.houses.content['House5'].sign

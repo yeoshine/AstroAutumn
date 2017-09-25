@@ -19,6 +19,7 @@ REDIS_PORT = 6379
 REDIS_PASSWORD = 'redispass9823'
 REDIS_WECHAT_USER_NAMESPACE = 'wechat:user:'
 REDIS_STOCK_CODE_NAMESPACE = 'stock:code:'
+REDIS_WECHAT_USER_DIVINATION = 'astro:divination:'
 
 SQLALCHEMY_DATABASE_URI = "mysql://{user}:{password}@{host}/{database}?charset={charset}" .format(
     user=MYSQL_USER, password=MYSQL_PASSWORD, host=MYSQL_HOST, database=MYSQL_DATABASE, charset=MYSQL_CHARSET)
@@ -38,6 +39,7 @@ EncodingAESKey = ""
 ###微信公众平台回复消息#############################################################
 DEFAULT_RESPONSE_TEXT = u"请回复正确的文字股票代码获取下个交易日股票涨跌信息，如回复股票代码：000001，" \
                         u"将收到系统回复\"你好，你关注的股票000001(平安银行)，下个交易日呈现上涨(下跌)趋势。\""
+DIVINATION_RETURN_TEXT = u"你好，你关注的股票{code}({name})，下个交易日呈现{performance}趋势。"
 
 
 ###股票相关配置####################################################################
@@ -223,6 +225,11 @@ DIVINATION_MOON_WEIGHT = 1.5
 DIVINATION_5HOUSE_WEIGHT = 3
 DIVINATION_11HOUSE_WEIGHT = 2
 DIVINATION_8HOUSE_WEIGHT = 1.5
+
+# 卜卦分数中间值
+DIVINATION_SMALL_SCORE = -207.5
+DIVINATION_MIDDLE_SCORE = -20.5
+DIVINATION_HIGH_SCORE = -186.5
 
 
 

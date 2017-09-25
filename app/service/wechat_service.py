@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from functools import wraps
-import time
+import time, datetime
 from .. import app
 from flask import request, redirect
 from wechat_sdk import WechatBasic
 from ..models.user import User
 from ..plugins.state import *
 from instance import config
+from ..utils.astro_divination import AstroDivination
 
 
 def check_signature(func):
@@ -195,9 +196,22 @@ def text_response():
     message.content = message.content.lstrip()
 
     if message.content.isdigit():
-        if return_stock_code(message.content):
-            pass
+        code = message.content
+        name = return_stock_code(code)
+        if name:
+            result = AstroDivination.handle(code, name)
+            today = datetime.datetime.today().strptime('%Y%m%d')
 
+            redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + '_' + openid + '_' + today + '_' + code, {
+                "openid": openid,
+                "code": code,
+                "name": name,
+                "score": result['score'],
+                "performance": result['performance'],
+                "message": result['message'],
+                "divination_time": result['divination_time'],
+                "message_time": message.time,
+            })
 
     app.logger.warning(u"收到消息: %s，回复消息: %s" %(message.content, response))
 

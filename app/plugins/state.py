@@ -31,8 +31,19 @@ def get_user_last_interact_time(openid):
         return 0
 
 def save_stock_code(code, name):
+    """
+    写入股票code->name
+    :param code:
+    :param name:
+    :return:
+    """
     return redis.set(config.REDIS_STOCK_CODE_NAMESPACE + code, name)
 
 
 def return_stock_code(code):
+    """
+    获取股票名称
+    :param code:
+    :return:
+    """
     return redis.get(config.REDIS_STOCK_CODE_NAMESPACE + code)
