@@ -202,7 +202,7 @@ def text_response():
 
     if message.content.isdigit():
         code = message.content
-        name = return_stock_code(code)
+        name = return_stock_code(code).decode()
         if name:
             result = AstroDivination.handle(str(code), str(name))
             today = datetime.datetime.today().strftime('%Y%m%d')
