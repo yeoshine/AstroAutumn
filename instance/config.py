@@ -19,7 +19,7 @@ REDIS_PORT = 6379
 REDIS_PASSWORD = 'redispass9823'
 REDIS_WECHAT_USER_NAMESPACE = 'wechat:user:'
 REDIS_STOCK_CODE_NAMESPACE = 'stock:code:'
-REDIS_WECHAT_USER_DIVINATION = 'astro:divination:'
+REDIS_ASTRO_DIVINATION_NAMESPACE = 'astro:divination:'
 
 SQLALCHEMY_DATABASE_URI = "mysql://{user}:{password}@{host}/{database}?charset={charset}" .format(
     user=MYSQL_USER, password=MYSQL_PASSWORD, host=MYSQL_HOST, database=MYSQL_DATABASE, charset=MYSQL_CHARSET)

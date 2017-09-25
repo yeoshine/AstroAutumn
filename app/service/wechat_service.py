@@ -203,28 +203,29 @@ def text_response():
     if message.content.isdigit():
         code = message.content
         name = return_stock_code(code)
-        app.logger.warning(u"code: %s, name: %s" % (code, name))
         if name:
             result = AstroDivination.handle(str(code), str(name.decode()))
             today = datetime.datetime.today().strftime('%Y%m%d')
 
-            redis.hmset(
-                config.REDIS_WECHAT_USER_DIVINATION +
-                '_' +
-                code +
-                '_' +
-                today,
-                {
-                    "openid": openid,
-                    "code": code,
-                    "name": name,
-                    "score": result['score'],
-                    "performance": result['performance'],
-                    "message": result['message'],
-                    "divination_time": result['divination_time'],
-                    "message_time": time.strftime('%Y-%m-%d %H:%M:%S', message.time)
-                })
-            response = result['message']
+            #判断是否有过卜卦记录
+            key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + '_' + code + '_' + today, 'code'
+            item = redis.hexists(key)
+            if not item:
+                redis.hmset(
+                    key,
+                    {
+                        "openid": openid,
+                        "code": code,
+                        "name": name,
+                        "score": result['score'],
+                        "performance": result['performance'],
+                        "message": result['message'],
+                        "divination_time": result['divination_time'],
+                        "divination_times": 1,
+                        "message_time": time.strftime('%Y-%m-%d %H:%M:%S', message.time)
+                    })
+                redis.hincrby(key, 'divination_times', 1)
+                response = result['message']
 
     app.logger.warning(u"收到消息: %s，回复消息: %s" % (message.content, response))
 
