@@ -202,10 +202,10 @@ def text_response():
 
     if message.content.isdigit():
         code = message.content
-        name = return_stock_code(code).decode()
+        name = return_stock_code(code)
         app.logger.warning(u"code: %s, name: %s" % (code, name))
         if name:
-            result = AstroDivination.handle(str(code), str(name))
+            result = AstroDivination.handle(str(code), str(name.decode()))
             today = datetime.datetime.today().strftime('%Y%m%d')
 
             redis.hmset(
