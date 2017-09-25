@@ -200,7 +200,7 @@ def text_response():
         name = return_stock_code(code)
         if name:
             result = AstroDivination.handle(code, name)
-            today = datetime.datetime.today().strptime('%Y%m%d')
+            today = datetime.datetime.today().strftime('%Y%m%d')
 
             redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + '_' + openid + '_' + today + '_' + code, {
                 "openid": openid,
