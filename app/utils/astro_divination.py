@@ -49,43 +49,11 @@ class AstroDivination:
     @staticmethod
     def divination_score():
         """
-        计算卜卦盘分数
+        卜卦盘分数计算
+        卜卦盘行星分数重算,返回只需要的行星和分数,通过相位和权重计算最终分数
         :return:
         """
         divination_chart = AstroDivination.create_divination_chart()
-        divination_object_score_dict = AstroDivination.divination_object_score(divination_chart)
-        return AstroDivination.divination_aspect_score(divination_chart, divination_object_score_dict)
-
-
-
-    @staticmethod
-    def divination_aspect_score(divination_chart, divination_object_score_dict):
-        """
-        计算卜卦盘相位分数
-        :param divination_chart:
-        :return:
-        """
-        aspect_list = AstroAspect.divination_aspect(divination_chart)
-        score = 0
-        for i in range(len(aspect_list)):
-            object1 = aspect_list[i].active.id
-            object2 = aspect_list[i].passive.id
-            aspect = aspect_list[i].type
-            if aspect != -1:
-                if object1 in divination_object_score_dict:
-                    score += divination_object_score_dict[object1] + \
-                         config.DIVINATION_ASPECT_SCORE[aspect] + divination_object_score_dict[object2]
-        return score
-
-
-    @staticmethod
-    def divination_object_score(divination_chart):
-        """
-        卜卦盘行星分数重算,返回只需要的行星和分数
-        :param divination_chart:
-        :return:
-        """
-
         # 各宫落在的星座
         house1_sign = divination_chart.houses.content['House1'].sign
         house5_sign = divination_chart.houses.content['House5'].sign
@@ -115,20 +83,37 @@ class AstroDivination:
                 score += v * config.DIVINATION_8HOUSE_WEIGHT
             divination_objects_score.setdefault(k, score)
 
-        #剔除没加分行星,只考虑分数已经变化行星相位
+        # 剔除没加分行星,只考虑分数已经变化行星相位
         for k1, v1 in divination_objects_score.items():
             for k2, v2 in config.OBJECTS_SCORE.items():
                 if k1 == k2 and v1 == v2:
                     del divination_objects_score[k1]
 
-        return divination_objects_score
-
-
-
-
-
-
-
-
-
-
+        # 卜卦盘行星相位
+        aspect_list = AstroAspect.divination_aspect(divination_chart)
+        score = 0
+        for i in range(len(aspect_list)):
+            object1 = aspect_list[i].active.id
+            object2 = aspect_list[i].passive.id
+            aspect = aspect_list[i].type
+            if aspect != -1:
+                if object1 in divination_objects_score:
+                    if object1 == house1_object:
+                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                            config.DIVINATION_ASC_SIGN_RULER_WEIGHT + config.OBJECTS_SCORE[object2]
+                    if object1 == 'Sun':
+                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                            config.DIVINATION_SUN_WEIGHT + config.OBJECTS_SCORE[object2]
+                    if object1 == 'Moon':
+                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                            config.DIVINATION_MOON_WEIGHT + config.OBJECTS_SCORE[object2]
+                    if object1 == house5_object:
+                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                            config.DIVINATION_5HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
+                    if object1 == house11_object:
+                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                            config.DIVINATION_11HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
+                    if object1 == house8_object:
+                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                            config.DIVINATION_8HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
+        return score

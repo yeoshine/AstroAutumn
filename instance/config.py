@@ -167,7 +167,7 @@ OBJECTS_SCORE = {
 
 # 卜卦相位计算分数
 DIVINATION_ASPECT_SCORE = {
-    0: 0,
+    0: 0.5,
     60: 1,
     90: -3,
     120: 2,
