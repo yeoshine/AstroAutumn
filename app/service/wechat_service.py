@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from functools import wraps
-import time, datetime
+import time
+import datetime
 from .. import app
 from flask import request, redirect
 from wechat_sdk import WechatBasic
@@ -37,7 +38,10 @@ def check_signature(func):
 
 def set_user_info(openid):
     """保存用户信息"""
-    cache = redis.hexists(config.REDIS_WECHAT_USER_NAMESPACE + openid, 'nickname')
+    cache = redis.hexists(
+        config.REDIS_WECHAT_USER_NAMESPACE +
+        openid,
+        'nickname')
 
     if not cache:
         user_info = User.query.filter_by(openid=openid).first()
@@ -64,17 +68,16 @@ def set_user_info(openid):
 
         if user_info:
             # 写入缓存
-            redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + user_info.openid, {
-                "nickname": user_info.nickname,
-                "realname": user_info.realname,
-                "classname": user_info.classname,
-                "sex": user_info.sex,
-                "province": user_info.province,
-                "city": user_info.city,
-                "country": user_info.country,
-                "headimgurl": user_info.headimgurl,
-                "regtime": user_info.regtime
-            })
+            redis.hmset(config.REDIS_WECHAT_USER_NAMESPACE + user_info.openid,
+                        {"nickname": user_info.nickname,
+                         "realname": user_info.realname,
+                         "classname": user_info.classname,
+                         "sex": user_info.sex,
+                         "province": user_info.province,
+                         "city": user_info.city,
+                         "country": user_info.country,
+                         "headimgurl": user_info.headimgurl,
+                         "regtime": user_info.regtime})
     else:
         timeout = int(time.time()) - int(get_user_last_interact_time(openid))
         if timeout > 24 * 60 * 60:
@@ -106,6 +109,7 @@ def set_user_info(openid):
                 })
         return None
 
+
 def is_user_exists(openid):
     """用户是否存在数据库"""
     cache = redis.exists(config.REDIS_WECHAT_USER_NAMESPACE + openid)
@@ -117,6 +121,7 @@ def is_user_exists(openid):
             return True
     else:
         return True
+
 
 def init_wechat_sdk():
     """初始化微信 SDK"""
@@ -199,22 +204,30 @@ def text_response():
         code = message.content
         name = return_stock_code(code)
         if name:
-            result = AstroDivination.handle(code, name)
+            result = AstroDivination.handle(str(code), str(name))
             today = datetime.datetime.today().strftime('%Y%m%d')
 
-            redis.hmset(config.REDIS_WECHAT_USER_DIVINATION + '_' + openid + '_' + today + '_' + code, {
-                "openid": openid,
-                "code": code,
-                "name": name,
-                "score": result['score'],
-                "performance": result['performance'],
-                "message": result['message'],
-                "divination_time": result['divination_time'],
-                "message_time": message.time,
-            })
+            redis.hmset(
+                config.REDIS_WECHAT_USER_DIVINATION +
+                '_' +
+                openid +
+                '_' +
+                today +
+                '_' +
+                code,
+                {
+                    "openid": openid,
+                    "code": code,
+                    "name": name,
+                    "score": result['score'],
+                    "performance": result['performance'],
+                    "message": result['message'],
+                    "divination_time": result['divination_time'],
+                    "message_time": message.time,
+                })
             response = result['message']
 
-    app.logger.warning(u"收到消息: %s，回复消息: %s" %(message.content, response))
+    app.logger.warning(u"收到消息: %s，回复消息: %s" % (message.content, response))
 
     return wechat.response_text(response)
 
