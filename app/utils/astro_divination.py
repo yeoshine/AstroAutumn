@@ -5,6 +5,7 @@ import datetime
 from .astro_chart import AstroChart
 from .astro_aspect import AstroAspect
 from instance import config
+import app
 
 # 卜卦计算类
 
@@ -24,7 +25,11 @@ class AstroDivination:
         divination_time = AstroDivination.create_divination_time()
         divination_chart = AstroDivination.create_divination_chart(divination_time)
         score = AstroDivination.divination_score(divination_chart)
+
+        app.logger.warning(u"code: %s，name: %s" % (code, name))
+
         if score <= config.DIVINATION_MIDDLE_SCORE:
+
             message = config.DIVINATION_RETURN_TEXT .format(code={code}, name={name}, performance={'下跌'})
             performance = 0
         else:
