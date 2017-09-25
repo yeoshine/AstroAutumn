@@ -16,7 +16,7 @@ MYSQL_DATABASE = 'autumndb'
 
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379
-REDIS_PASSWORD = 'redispass@$*^$^'
+REDIS_PASSWORD = 'redispass9823'
 REDIS_WECHAT_USER_NAMESPACE = 'wechat:user:'
 REDIS_STOCK_CODE_NAMESPACE = 'stock:code:'
 
