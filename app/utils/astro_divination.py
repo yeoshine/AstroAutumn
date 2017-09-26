@@ -30,7 +30,6 @@ class AstroDivination:
         app.logger.warning(u"code: %s，name: %s" % (code, name))
 
         if score <= config.DIVINATION_MIDDLE_SCORE:
-
             message = config.DIVINATION_RETURN_TEXT .format(
                 code=code, name=name, performance='下跌')
             performance = 0

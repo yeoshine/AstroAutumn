@@ -157,32 +157,25 @@ DIVINATION_OBJECTS = [
 
 # 行星本身计算分数
 OBJECTS_SCORE = {
-    'Sun': 1,
-    'Moon': 1,
-    'Mercury': 0.5,
+    'Sun': 2,
+    'Moon': 2,
+    'Mercury': 1,
     'Venus': 3,
-    'Mars': -3,
+    'Mars': -5,
     'Jupiter': 3,
-    'Saturn': -3,
+    'Saturn': -5,
 }
 
 
 # 卜卦相位计算分数
 DIVINATION_ASPECT_SCORE = {
-    0: 0.5,
-    60: 1,
-    90: -3,
-    120: 2,
-    180: -2
+    0: 1,
+    60: 2,
+    90: -5,
+    120: 3,
+    180: -3
 }
 
-
-# 卜卦宫(宫主星)权重
-DIVINATION_HOUSE_WEIGHT = {
-    5: 4,
-    11: 3,
-    8: 2
-}
 
 # 十二星座
 ARIES = 'Aries'
@@ -216,15 +209,15 @@ SIGN_RULER = {
 }
 
 # 卜卦盘上升星座守护星、太阳、月亮权重
-DIVINATION_ASC_SIGN_RULER_WEIGHT = 3
-DIVINATION_SUN_WEIGHT = 1.5
-DIVINATION_MOON_WEIGHT = 1.5
+DIVINATION_ASC_SIGN_RULER_WEIGHT = 4
+DIVINATION_SUN_WEIGHT = 2
+DIVINATION_MOON_WEIGHT = 2
 
 
 # 卜卦盘宫主星权重
-DIVINATION_5HOUSE_WEIGHT = 3
-DIVINATION_11HOUSE_WEIGHT = 2
-DIVINATION_8HOUSE_WEIGHT = 1.5
+DIVINATION_5HOUSE_WEIGHT = 5
+DIVINATION_11HOUSE_WEIGHT = 3
+DIVINATION_8HOUSE_WEIGHT = 2
 
 # 卜卦分数中间值
 DIVINATION_SMALL_SCORE = -207.5
