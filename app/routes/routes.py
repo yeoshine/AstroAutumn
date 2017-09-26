@@ -28,6 +28,8 @@ def handle_wechat_request():
 @app.route("/a", methods=['GET', 'POST'])
 def x():
     for i in range(10000):
-        score = AstroDivination.divination_score()
+        divination_time = AstroDivination.create_divination_time()
+        divination_chart = AstroDivination.create_divination_chart(divination_time)
+        score = AstroDivination.divination_score(divination_chart)
         redis.lpush('astro:divination:score', score)
     return True
