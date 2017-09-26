@@ -82,12 +82,14 @@ class AstroDivination:
         house5_sign = divination_chart.houses.content['House5'].sign
         house11_sign = divination_chart.houses.content['House11'].sign
         house8_sign = divination_chart.houses.content['House8'].sign
+        house2_sign = divination_chart.houses.content['House2'].sign
 
         # 星座守护星
         house1_object = config.SIGN_RULER[house1_sign]
         house5_object = config.SIGN_RULER[house5_sign]
         house11_object = config.SIGN_RULER[house11_sign]
         house8_object = config.SIGN_RULER[house8_sign]
+        house2_object = config.SIGN_RULER[house2_sign]
 
         divination_objects_score = {}
         for k, v in config.OBJECTS_SCORE.items():
@@ -104,13 +106,15 @@ class AstroDivination:
                 score += v * config.DIVINATION_11HOUSE_WEIGHT
             if k == house8_object:
                 score += v * config.DIVINATION_8HOUSE_WEIGHT
+            if k == house2_object:
+                score += v * config.DIVINATION_2HOUSE_WEIGHT
             divination_objects_score.setdefault(k, score)
 
-        # 剔除没加分行星,只考虑分数已经变化行星相位
-        for k1, v1 in divination_objects_score.items():
-            for k2, v2 in config.OBJECTS_SCORE.items():
-                if k1 == k2 and v1 == v2:
-                    del divination_objects_score[k1]
+        # # 剔除没加分行星,只考虑分数已经变化行星相位
+        # for k1, v1 in divination_objects_score.items():
+        #     for k2, v2 in config.OBJECTS_SCORE.items():
+        #         if k1 == k2 and v1 == v2:
+        #             del divination_objects_score[k1]
 
         # 卜卦盘行星相位
         aspect_list = AstroAspect.divination_aspect(divination_chart)
@@ -119,24 +123,26 @@ class AstroDivination:
             object1 = aspect_list[i].active.id
             object2 = aspect_list[i].passive.id
             aspect = aspect_list[i].type
-            if aspect != -1:
-                if object1 in divination_objects_score:
-                    if object1 == house1_object:
-                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
-                            config.DIVINATION_ASC_SIGN_RULER_WEIGHT + config.OBJECTS_SCORE[object2]
-                    if object1 == 'Sun':
-                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
-                            config.DIVINATION_SUN_WEIGHT + config.OBJECTS_SCORE[object2]
-                    if object1 == 'Moon':
-                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
-                            config.DIVINATION_MOON_WEIGHT + config.OBJECTS_SCORE[object2]
-                    if object1 == house5_object:
-                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
-                            config.DIVINATION_5HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
-                    if object1 == house11_object:
-                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
-                            config.DIVINATION_11HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
-                    if object1 == house8_object:
-                        score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
-                            config.DIVINATION_8HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
+            if object1 in divination_objects_score:
+                if object1 == house1_object:
+                    score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                        config.DIVINATION_ASC_SIGN_RULER_WEIGHT + config.OBJECTS_SCORE[object2]
+                if object1 == 'Sun':
+                    score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                        config.DIVINATION_SUN_WEIGHT + config.OBJECTS_SCORE[object2]
+                if object1 == 'Moon':
+                    score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                        config.DIVINATION_MOON_WEIGHT + config.OBJECTS_SCORE[object2]
+                if object1 == house5_object:
+                    score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                        config.DIVINATION_5HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
+                if object1 == house11_object:
+                    score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                        config.DIVINATION_11HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
+                if object1 == house8_object:
+                    score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                        config.DIVINATION_8HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
+                if object1 == house2_object:
+                    score += config.OBJECTS_SCORE[object1] + config.DIVINATION_ASPECT_SCORE[aspect] * \
+                        config.DIVINATION_2HOUSE_WEIGHT + config.OBJECTS_SCORE[object2]
         return score

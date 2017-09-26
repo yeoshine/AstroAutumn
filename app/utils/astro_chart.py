@@ -43,4 +43,4 @@ class AstroChart:
 
     @staticmethod
     def flat_chart(date, pos):
-        return Chart(date, pos, IDs=const.LIST_OBJECTS)
+        return Chart(date, pos, IDs=const.LIST_OBJECTS, hsys=const.HOUSES_PLACIDUS)

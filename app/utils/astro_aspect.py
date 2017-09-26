@@ -52,10 +52,17 @@ class AstroAspect:
 
         object_list_b = object_list_a
 
-        aspect_list = []
+        aspect_dict = {}
         for x in range(len(object_list_a)):
             for y in range(len(object_list_b)):
                 aspect = getAspect(object_list_a[x], object_list_b[y], config.MAJOR_ASPECTS)
-                aspect_list.append(aspect)
+                type = aspect.type
+                key = aspect.active.id + '-' + aspect.passive.id
+                if key not in aspect_dict and type != -1:
+                    aspect_dict.setdefault(key, aspect)
+
+        aspect_list = []
+        for k, v in aspect_dict.items():
+            aspect_list.append(v)
 
         return aspect_list
