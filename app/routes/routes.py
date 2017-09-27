@@ -25,9 +25,11 @@ def handle_wechat_request():
         # 微信接入验证
         return request.args.get('echostr', '')
 
-# @app.route("/a", methods=['GET', 'POST'])
-# def x():
-#     divination_time = AstroDivination.create_divination_time()
-#     divination_chart = AstroDivination.create_divination_chart(divination_time)
-#     score = AstroDivination.divination_score(divination_chart)
-#     a = 3
+@app.route("/a", methods=['GET', 'POST'])
+def a():
+    for i in range(10000):
+        divination_time = AstroDivination.create_divination_time()
+        divination_chart = AstroDivination.create_divination_chart(divination_time)
+        score = AstroDivination.divination_score(divination_chart)
+        redis.lpush('astro:divination:score', score)
+    return True
