@@ -208,7 +208,7 @@ def text_response():
             today = datetime.datetime.today().strftime('%Y%m%d')
 
             #判断是否有过卜卦记录
-            key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + code + ':' + today
+            key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + today + ':' + code
             redis_message = redis.hget(key, 'message')
             if not redis_message:
                 redis.hmset(
