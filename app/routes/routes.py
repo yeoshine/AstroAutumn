@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from .. import app
+from flask import render_template
 from ..service.wechat_service import *
 from ..service.astro_stock_service import AstroStockService
 from flask import request, abort
@@ -25,11 +26,12 @@ def handle_wechat_request():
         # 微信接入验证
         return request.args.get('echostr', '')
 
-@app.route("/a", methods=['GET', 'POST'])
-def a():
-    for i in range(10000):
-        divination_time = AstroDivination.create_divination_time()
-        divination_chart = AstroDivination.create_divination_chart(divination_time)
-        score = AstroDivination.divination_score(divination_chart)
-        redis.lpush('astro:divination:score', score)
-    return True
+@app.route("/list", methods=['GET'])
+def list():
+    return render_template('list.html', name='xxx')
+
+
+@app.route("/detail", methods=['GET'])
+def detail(id):
+
+    return render_template('detail.html', name='xxx')

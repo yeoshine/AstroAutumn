@@ -190,6 +190,18 @@ def set_msg_type(msg_type):
     return decorator
 
 
+def trade_day():
+    # 判断是不是周末,取周五
+    day = datetime.datetime.now().weekday()
+    if day is 5 or day is 6:
+        today = datetime.date.today()
+        cache_day = today + datetime.timedelta(4 - today.weekday())
+        cache_day = cache_day.strftime('%Y%m%d')
+    else:
+        cache_day = datetime.datetime.today().strftime('%Y%m%d')
+    return cache_day
+
+
 @set_msg_type('text')
 def text_response():
     """文本类型回复"""
@@ -204,26 +216,23 @@ def text_response():
         code = message.content
         name = return_stock_code(code)
         if name:
-            result = AstroDivination.handle(str(code), str(name.decode()))
-            today = datetime.datetime.today().strftime('%Y%m%d')
-
-            #判断是否有过卜卦记录
-            key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + today + ':' + code
+            # 判断是否有过卜卦记录
+            cache_day = trade_day()
+            key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + cache_day + ':' + code
             redis_message = redis.hget(key, 'message')
             if not redis_message:
-                redis.hmset(
-                    key,
-                    {
-                        "openid": openid,
-                        "code": code,
-                        "name": name,
-                        "score": result['score'],
-                        "performance": result['performance'],
-                        "message": result['message'],
-                        "divination_time": result['divination_time'],
-                        "divination_times": 1,
-                        "message_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                    })
+                result = AstroDivination.handle(str(code), str(name.decode()))
+                redis.hmset(key,
+                            {"openid": openid,
+                             "code": code,
+                             "name": name,
+                             "score": result['score'],
+                                "performance": result['performance'],
+                                "message": result['message'],
+                                "divination_time": result['divination_time'],
+                                "divination_times": 1,
+                                "message_time": time.strftime("%Y-%m-%d %H:%M:%S",
+                                                              time.localtime())})
                 response = result['message']
             else:
                 redis.hincrby(key, 'divination_times', 1)
