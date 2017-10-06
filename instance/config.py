@@ -32,7 +32,7 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 
 ###微信公众平台配置####################################################################
 APP_ID = "wx31ca5a3f3e810fa5"
-APP_SECRET = "50b8b8b835a6c9777e939775006859e0"
+APP_SECRET = "7ee75a3c946b2484a2996f4d64f7acdc"
 TOKEN = "fsdhk23983ghjfdslklfd"
 EncodingAESKey = ""
 
