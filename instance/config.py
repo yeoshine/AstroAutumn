@@ -31,7 +31,7 @@ CELERY_RESULT_BACKEND = 'redis://{password}:{host}:{port}/1' .format(
 CELERY_TIMEZONE = 'Asia/Shanghai'
 
 ###微信公众平台配置####################################################################
-APP_ID = "wx8a0a0bc4b5489057"
+APP_ID = "wx31ca5a3f3e810fa5"
 APP_SECRET = "50b8b8b835a6c9777e939775006859e0"
 TOKEN = "fsdhk23983ghjfdslklfd"
 EncodingAESKey = ""
