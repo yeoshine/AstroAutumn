@@ -32,6 +32,6 @@ def list():
 
 
 @app.route("/detail", methods=['GET'])
-def detail(id):
+def detail():
 
     return render_template('detail.html', name='xxx')
