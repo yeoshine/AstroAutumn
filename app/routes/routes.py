@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .. import app
 from flask import render_template
 from ..service.wechat_service import *
-from ..service.astro_stock_service import AstroStockService
 from flask import request, abort
-from ..utils.astro_divination import AstroDivination
 import sys
 
 
