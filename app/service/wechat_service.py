@@ -165,6 +165,7 @@ def wechat_response(data):
     set_user_info(openid)
 
     try:
+        app.logger.warning(u"收到消息类型: %s" % (message.type))
         get_resp_func = msg_type_response[message.type]
         response = get_resp_func()
     except KeyError:
@@ -245,8 +246,6 @@ def text_response():
 @set_msg_type('subscribe')
 def subscribe_response():
     app.logger.warning(u"收到订阅openid=: %s" % (message.source))
-
-    wechat = init_wechat_sdk()
     try:
         response = config.SUBSCRIBE_RESPONSE_TEXT
         return wechat.response_text(response)
