@@ -39,14 +39,11 @@ EncodingAESKey = ""
 MENU_SETTING = {
                 'button':[
                     {
-                        'name': '股星推荐',
-                        'sub_button': [
-                            {
-                                'type': 'view',
-                                'name': '',
-                                'url': 'https://gx.dtd.la/list'
-                            },
-                        ]
+                        {
+                            "type": "view",
+                            "name": "🌟股星推荐",
+                            'url': 'https://gx.dtd.la/list'
+                        }
                     }
                 ]}
 
