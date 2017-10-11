@@ -242,11 +242,11 @@ def text_response():
 
     return wechat.response_text(response)
 
-@set_msg_type('subscribe')
+@set_msg_type('event')
 def subscribe_response():
     wechat = init_wechat_sdk()
     try:
-        response = config.SUBSCRIBE_RESPONSE_TEST
+        response = config.SUBSCRIBE_RESPONSE_TEXT
         return wechat.response_text(response)
     except Exception as e:
         return wechat.response_text(e)
