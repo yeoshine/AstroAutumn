@@ -36,6 +36,20 @@ APP_SECRET = "7ee75a3c946b2484a2996f4d64f7acdc"
 TOKEN = "fsdhk23983ghjfdslklfd"
 EncodingAESKey = ""
 
+MENU_SETTING = {
+                'button':[
+                    {
+                        'name': '股星推荐',
+                        'sub_button': [
+                            {
+                                'type': 'view',
+                                'name': '',
+                                'url': 'https://gx.dtd.la/list'
+                            },
+                        ]
+                    }
+                ]}
+
 ###微信公众平台回复消息#############################################################
 DEFAULT_RESPONSE_TEXT = u"请回复正确的文字股票代码获取下个交易日股票涨跌信息，如回复股票代码：000001，" \
                         u"将收到系统回复\"你好，你关注的股票000001(平安银行)，下个交易日呈现上涨(下跌)趋势。\""

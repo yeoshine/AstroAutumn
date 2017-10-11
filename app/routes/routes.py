@@ -32,3 +32,17 @@ def list():
 def detail():
 
     return render_template('detail.html', name='xxx')
+
+
+@app.route("/menu", methods=['GET'])
+def menu():
+    return update_menu_setting()
+
+
+
+
+
+
+
+
+

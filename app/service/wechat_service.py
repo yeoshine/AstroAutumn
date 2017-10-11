@@ -251,3 +251,13 @@ def text_response():
 def image_response():
     response = config.DEFAULT_RESPONSE_TEXT
     return wechat.response_text(response)
+
+
+def update_menu_setting():
+    """更新自定义菜单"""
+    try:
+        wechat.create_menu(config.MENU_SETTING)
+    except Exception as e:
+        return wechat.response_text(e)
+    else:
+        return wechat.response_text('Done!')
