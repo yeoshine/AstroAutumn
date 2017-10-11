@@ -255,6 +255,7 @@ def image_response():
 
 def update_menu_setting():
     """更新自定义菜单"""
+    wechat = init_wechat_sdk()
     try:
         wechat.create_menu(config.MENU_SETTING)
     except Exception as e:
