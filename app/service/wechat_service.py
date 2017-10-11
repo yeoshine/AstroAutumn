@@ -244,6 +244,8 @@ def text_response():
 
 @set_msg_type('event')
 def subscribe_response():
+    app.logger.warning(u"收到事件: %s" % (message.content))
+
     wechat = init_wechat_sdk()
     try:
         response = config.SUBSCRIBE_RESPONSE_TEXT
