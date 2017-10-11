@@ -45,7 +45,7 @@ MENU_SETTING = {
                     },
                     {
                         "type": "view",
-                        "name": "关于股星",
+                        "name": "💰关于股星",
                         'url': 'https://mp.weixin.qq.com/s?__biz=MzU2NDI1NTY4Ng==&mid=2247483654&idx=1&sn=15f79c730877d22735783370feeb478e&chksm=fc4c8fafcb3b06b9754b5bff6d749227d5c1b0780fe71a08f72aa692f07dee5f7dc068f72421#rd'
                     }
                 ]}
