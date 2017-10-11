@@ -242,13 +242,22 @@ def text_response():
 
     return wechat.response_text(response)
 
+@set_msg_type('subscribe')
+def subscribe_response():
+    wechat = init_wechat_sdk()
+    try:
+        response = config.SUBSCRIBE_RESPONSE_TEST
+        return wechat.response_text(response)
+    except Exception as e:
+        return wechat.response_text(e)
+
 
 @set_msg_type('image')
 @set_msg_type('voice')
 @set_msg_type('video')
 @set_msg_type('music')
 @set_msg_type('news')
-def image_response():
+def other_response():
     response = config.DEFAULT_RESPONSE_TEXT
     return wechat.response_text(response)
 
