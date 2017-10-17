@@ -171,3 +171,22 @@ class AstroStockService:
                 AstroStockService.__class__, sys._getframe().f_code.co_name, e)
 
 
+
+    @staticmethod
+    def all_code():
+        try:
+            host = "www.ctxalgo.com"
+            url = "http://www.ctxalgo.com/api/stocks"
+            http_pool = urllib3.HTTPConnectionPool(host)
+            r = http_pool.urlopen('GET', url)
+            data_dict = json.loads(r.data)
+            code_list = []
+            for k,v in data_dict.items():
+                code = k
+                rcode = re.sub('[shsz]', '', code)
+                code_list.append(rcode)
+            return code_list
+        except Exception as e:
+            return "Class: %s method: %s %s " % (
+                AstroStockService.__class__, sys._getframe().f_code.co_name, e)
+
