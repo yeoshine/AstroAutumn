@@ -22,6 +22,3 @@ class StkBasicInfo(db.Model):
     DelistingDate = db.Column(db.Date)
     BoardCode = db.Column(db.Integer)
     BoardName = db.Column(db.String(200))
-
-    def __repr__(self):
-        return '<ListingDate=%s>' % (self.ListingDate)
