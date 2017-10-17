@@ -3,6 +3,7 @@
 
 from app.service.astro_stock_service import AstroStockService
 from app.service.wechat_service import *
+import sys
 
 
 class DivinationData:
@@ -55,6 +56,8 @@ class DivinationData:
                     all += 1
                     import tushare as ts
                     today = autumn_date.get_today()
+                    print(today)
+                    sys.exit()
                     df = ts.get_hist_data(code, start=today, end=today)
                     if df.p_change > 0:
                         correct += 1
