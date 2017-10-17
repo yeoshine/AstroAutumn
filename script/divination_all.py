@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from app.service.astro_stock_service import AstroStockService
-from app.service.wechat_service import *
+from ..app.service.astro_stock_service import AstroStockService
+from ..app.service.wechat_service import *
 
 
 def all_stock_result():
