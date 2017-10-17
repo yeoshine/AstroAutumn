@@ -67,4 +67,5 @@ class DivinationData:
 
 
 if __name__ == '__main__':
-    DivinationData.divination_result()
+    x = DivinationData.divination_result()
+    print(x)
