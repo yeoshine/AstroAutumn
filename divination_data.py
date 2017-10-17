@@ -83,6 +83,7 @@ class DivinationData:
                 'wrong_code': wrong_code_str,
                 'divination_time': autumn_date.get_yesterday().strftime('%Y-%m-%d'),
                 'result_time': today}
+            print(dict)
             return AstroDivinationResult(dict).save()
         except Exception as e:
             return e
