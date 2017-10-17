@@ -72,6 +72,8 @@ class DivinationData:
                     if df.p_change.values[0] < 0 and performance is '1':
                         wrong_number += 1
                         wrong_code.append(code)
+                else:
+                    print('no_performance')
             correct_code_str = DivinationData.list_to_string(correct_code)
             wrong_code_str = DivinationData.list_to_string(wrong_code)
             dict = {
