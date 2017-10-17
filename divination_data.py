@@ -55,15 +55,21 @@ class DivinationData:
                 code = code_list[i]
                 yesterday = '20171017'
                 key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + yesterday + ':' + code
-                performance = redis.hget(key, 'performance')
+                performance = redis.hget(key, 'performance').decode()
                 if performance:
                     all_number += 1
                     import tushare as ts
                     df = ts.get_hist_data(code, start=today, end=today)
-                    if df.p_change.values[0] > 0:
+                    if df.p_change.values[0] > 0 and performance is '1':
                         correct_number += 1
                         correct_code.append(code)
-                    else:
+                    if df.p_change.values[0] > 0 and performance is '0':
+                        wrong_number += 1
+                        wrong_code.append(code)
+                    if df.p_change.values[0] < 0 and performance is '0':
+                        correct_number += 1
+                        correct_code.append(code)
+                    if df.p_change.values[0] < 0 and performance is '1':
                         wrong_number += 1
                         wrong_code.append(code)
             correct_code_str = DivinationData.list_to_string(correct_code)
