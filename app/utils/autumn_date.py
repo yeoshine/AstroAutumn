@@ -8,8 +8,8 @@ def get_yesterday():
     today = datetime.date.today()
     oneday = datetime.timedelta(days=1)
     yesterday = today - oneday
-    return yesterday.strftime('%Y%m%d')
+    return yesterday
 
 def get_today():
     today = datetime.date.today()
-    return today.strftime('%Y-%m-%d')
+    return today

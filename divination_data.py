@@ -3,7 +3,8 @@
 
 from app.service.astro_stock_service import AstroStockService
 from app.service.wechat_service import *
-import sys
+from app.utils import autumn_date
+from app.models.astro_divination_result import AstroDivinationResult
 
 
 class DivinationData:
@@ -11,7 +12,7 @@ class DivinationData:
     @staticmethod
     def all_stock_result():
         try:
-            code_list =  AstroStockService.all_code()
+            code_list = AstroStockService.all_code()
             for i in range(len(code_list)):
                 code = code_list[i]
                 name = return_stock_code(code)
@@ -21,7 +22,8 @@ class DivinationData:
                     key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + cache_day + ':' + code
                     redis_message = redis.hget(key, 'message')
                     if not redis_message:
-                        result = AstroDivination.handle(str(code), str(name.decode()))
+                        result = AstroDivination.handle(
+                            str(code), str(name.decode()))
                         redis.hmset(key,
                                     {"openid": 'local',
                                      "code": code,
@@ -38,37 +40,51 @@ class DivinationData:
         except Exception as e:
             return e
 
-
     @staticmethod
     def divination_result():
-        all = 0
-        correct = 0
-        wrong = 0
+        all_number = 0
+        correct_number = 0
+        correct_code = []
+        wrong_number = 0
+        wrong_code = []
+        today = autumn_date.get_today().strftime('%Y-%m-%d')
+        yesterday = autumn_date.get_yesterday().strftime('%Y%m%d')
         try:
             code_list = AstroStockService.all_code()
             for i in range(len(code_list)):
                 code = code_list[i]
-                from app.utils import autumn_date
-                yesterday = autumn_date.get_yesterday()
+                yesterday = '20171017'
                 key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + yesterday + ':' + code
                 performance = redis.hget(key, 'performance')
                 if performance:
-                    all += 1
+                    all_number += 1
                     import tushare as ts
-                    today = autumn_date.get_today()
-                    print(today)
-                    sys.exit()
                     df = ts.get_hist_data(code, start=today, end=today)
-                    if df.p_change > 0:
-                        correct += 1
+                    if df.p_change.values[0] > 0:
+                        correct_number += 1
+                        correct_code.append(code)
                     else:
-                        wrong += 1
-            dict = {'all': all, 'correct': correct, 'wrong': wrong}
-            return dict
+                        wrong_number += 1
+                        wrong_code.append(code)
+            correct_code_str = DivinationData.list_to_string(correct_code)
+            wrong_code_str = DivinationData.list_to_string(wrong_code)
+            dict = {
+                'all_number': all_number,
+                'correct_number': correct_number,
+                'wrong_number': wrong_number,
+                'accuracy': correct_number/all_number * 100,
+                'correct_code': correct_code_str,
+                'wrong_code': wrong_code_str,
+                'divination_time': autumn_date.get_yesterday().strftime('%Y-%m-%d'),
+                'result_time': today}
+            return AstroDivinationResult(dict).save()
         except Exception as e:
             return e
 
+    @staticmethod
+    def list_to_string(list):
+        return (",".join(str(i) for i in list))
+
 
 if __name__ == '__main__':
-    x = DivinationData.divination_result()
-    print(x)
+    DivinationData.divination_result()
