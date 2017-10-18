@@ -57,27 +57,27 @@ class DivinationData:
                 key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + yesterday + ':' + code
                 performance = redis.hget(key, 'performance').decode()
                 if performance is '1' or performance is '0':
-                    all_number += 1
-                    import tushare as ts
-                    today = '2017-10-17'
-                    df = ts.get_hist_data(code, start=today, end=today)
-                    if df.p_change.values[0]:
+                    try:
+                        import tushare as ts
+                        today = '2017-10-17'
+                        df = ts.get_hist_data(code, start=today, end=today)
                         if df.p_change.values[0] > 0:
                             if performance is '1':
-                                correct_number += 1
+                                correct_number = correct_number + 1
                                 correct_code.append(code)
                             else:
-                                wrong_number += 1
+                                wrong_number = wrong_number + 1
                                 wrong_code.append(code)
-                        else:
+                        if df.p_change.values[0] < 0:
                             if performance is '0':
-                                correct_number += 1
+                                correct_number = correct_number + 1
                                 correct_code.append(code)
                             else:
-                                wrong_number += 1
+                                wrong_number = wrong_number + 1
                                 wrong_code.append(code)
-                    else:
-                        print('no_df')
+                        all_number += 1
+                    except Exception as e:
+                        print(code + '_' + str(e))
                 else:
                     print('no_performance')
             correct_code_str = DivinationData.list_to_string(correct_code)
@@ -94,7 +94,7 @@ class DivinationData:
             print(dict)
             return AstroDivinationResult(dict).save()
         except Exception as e:
-            return e
+            return str(e)
 
     @staticmethod
     def list_to_string(list):
