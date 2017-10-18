@@ -53,29 +53,33 @@ class DivinationData:
             code_list = AstroStockService.all_code()
             for i in range(len(code_list)):
                 code = code_list[i]
-                yesterday = '20171017'
                 key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + yesterday + ':' + code
                 performance = redis.hget(key, 'performance').decode()
                 if performance is '1' or performance is '0':
                     try:
                         import tushare as ts
-                        today = '2017-10-17'
                         df = ts.get_hist_data(code, start=today, end=today)
-                        if df.p_change.values[0] > 0:
-                            if performance is '1':
-                                correct_number = correct_number + 1
-                                correct_code.append(code)
+                        if df is not None:
+                            if not df.empty:
+                                if df.p_change[0] > 0:
+                                    if performance is '1':
+                                        correct_number += 1
+                                        correct_code.append(code)
+                                    else:
+                                        wrong_number += 1
+                                        wrong_code.append(code)
+                                if df.p_change.values[0] < 0:
+                                    if performance is '0':
+                                        correct_number += 1
+                                        correct_code.append(code)
+                                    else:
+                                        wrong_number += 1
+                                        wrong_code.append(code)
+                                all_number += 1
                             else:
-                                wrong_number = wrong_number + 1
-                                wrong_code.append(code)
-                        if df.p_change.values[0] < 0:
-                            if performance is '0':
-                                correct_number = correct_number + 1
-                                correct_code.append(code)
-                            else:
-                                wrong_number = wrong_number + 1
-                                wrong_code.append(code)
-                        all_number += 1
+                                print(code + '_df_' + 'empty')
+                        else:
+                            print(code + '_df_' + 'none')
                     except Exception as e:
                         print(code + '_' + str(e))
                 else:
@@ -102,4 +106,25 @@ class DivinationData:
 
 
 if __name__ == '__main__':
+
     DivinationData.divination_result()
+
+    # import tushare as ts
+    # today = '2017-10-17'
+    # df = ts.get_hist_data('600175', start=today, end=today)
+    # df1 = ts.get_hist_data('600001', start=today, end=today)
+    # z = 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
