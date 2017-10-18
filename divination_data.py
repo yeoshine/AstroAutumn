@@ -52,7 +52,7 @@ class DivinationData:
         try:
             code_list = AstroStockService.all_code()
             for i in range(len(code_list)):
-                code = '000100'
+                code = code_list[i]
                 yesterday = '20171017'
                 key = config.REDIS_ASTRO_DIVINATION_NAMESPACE + yesterday + ':' + code
                 performance = redis.hget(key, 'performance').decode()
