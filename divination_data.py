@@ -59,20 +59,23 @@ class DivinationData:
                 if performance is '1' or performance is '0':
                     all_number += 1
                     import tushare as ts
+                    today = '2017-10-17'
                     df = ts.get_hist_data(code, start=today, end=today)
                     if df.p_change.values[0]:
-                        if df.p_change.values[0] > 0 and performance is '1':
-                            correct_number += 1
-                            correct_code.append(code)
-                        if df.p_change.values[0] > 0 and performance is '0':
-                            wrong_number += 1
-                            wrong_code.append(code)
-                        if df.p_change.values[0] < 0 and performance is '0':
-                            correct_number += 1
-                            correct_code.append(code)
-                        if df.p_change.values[0] < 0 and performance is '1':
-                            wrong_number += 1
-                            wrong_code.append(code)
+                        if df.p_change.values[0] > 0:
+                            if performance is '1':
+                                correct_number += 1
+                                correct_code.append(code)
+                            else:
+                                wrong_number += 1
+                                wrong_code.append(code)
+                        else:
+                            if performance is '0':
+                                correct_number += 1
+                                correct_code.append(code)
+                            else:
+                                wrong_number += 1
+                                wrong_code.append(code)
                     else:
                         print('no_df')
                 else:
